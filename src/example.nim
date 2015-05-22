@@ -1,7 +1,7 @@
 import twitter
 
 when isMainModule:
-  var twitter = newTwitterAPI("Your Consumer Key",
+  var twitterAPI = newTwitterAPI("Your Consumer Key",
                               "Your Consumer Secret",
                               "Your Access Token",
                               "Your Access Token Secret")
