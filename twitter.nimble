@@ -9,4 +9,4 @@ srcDir = "src"
 bin = "twitter"
 
 [Deps]
-Requires: "sha1 >= 1.0"
+Requires: "sha1 >= 1.0, nuuid >= 0.1.0"
