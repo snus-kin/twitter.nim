@@ -146,3 +146,14 @@ proc get*(twitter: TwitterAPI, endPoint: string,
 proc post*(twitter: TwitterAPI, endPoint: string,
           additionalParams: Table[string, string] = initTable[string, string]()): Response =
   return request(twitter, endPoint, "POST", additionalParams)
+
+
+proc statusesUpdate*(twitter: TwitterAPI,
+                    additionalParams: Table[string, string]): Response =
+  return post(twitter, "statuses/update.json", additionalParams)
+
+
+template callAPI*(twitter: expr,
+                  api: expr,
+                  additionalParams: expr): expr =
+  api(twitter, additionalParams)
