@@ -15,16 +15,32 @@ const baseUrl = "https://api.twitter.com/1.1/"
 const oauthBaseUrl = "https://api.twitter.com/oauth/"
 
 
-type TwitterAPI* = object
+type ConsumerToken* = object
   consumerKey: string
   consumerSecret: string
+
+
+type TwitterAPI* = object
+  consumerToken: ConsumerToken
   accessToken: string
   accessTokenSecret: string
 
 
+proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
+  return ConsumerToken(consumerKey: consumerKey,
+                       consumerSecret: consumerSecret)
+
+
+proc newTwitterAPI*(consumerToken: ConsumerToken, accessToken, accessTokenSecret: string): TwitterAPI =
+  return TwitterAPI(consumerToken: consumerToken,
+                    accessToken: accessToken,
+                    accessTokenSecret: accessTokenSecret)
+
+
 proc newTwitterAPI*(consumerKey, consumerSecret, accessToken, accessTokenSecret: string): TwitterAPI =
-  return TwitterAPI(consumerKey: consumerKey,
-                    consumerSecret: consumerSecret,
+  var consumerToken: ConsumerToken = ConsumerToken(consumerKey: consumerKey,
+                                                   consumerSecret: consumerSecret)
+  return TwitterAPI(consumerToken: consumerToken,
                     accessToken: accessToken,
                     accessTokenSecret: accessTokenSecret)
 
@@ -102,9 +118,10 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   var url = baseUrl & endPoint
   var keys: seq[string] = @[]
 
-  var params: Table[string, string] = buildParams(twitter.consumerKey, twitter.accessToken,
+  var params: Table[string, string] = buildParams(twitter.consumerToken.consumerKey,
+                                                  twitter.accessToken,
                                                   additionalParams)
-  params["oauth_signature"] = signature(twitter.consumerSecret,
+  params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
                                         twitter.accessTokenSecret,
                                         httpMethod, url, params)
 
