@@ -115,7 +115,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   if httpMethod == "GET":
     return httpclient.get(url & "?" & path, "Authorization: " & authorize & "\c\L")
   elif httpMethod == "POST":
-    return httpclient.post(url, " Authorization: " & authorize & "\c\L", path)
+    return httpclient.post(url & "?" & path, " Authorization: " & authorize & "\c\L")
 
 
 proc get*(twitter: TwitterAPI, endPoint: string,
