@@ -58,9 +58,10 @@ proc hmacSha1*(key, message: string): SHA1Digest =
   k1.mapIt(it xor 0x5c)
   k2.mapIt(it xor 0x36)
 
-  var arr = newSeq[uint8]()
+  var arr: seq[uint8] = @[]
 
-  for i, x in sha1.compute(cast[string](k2) & message): arr.insert(x, i)
+  for x in sha1.compute(cast[string](k2) & message):
+    arr.add(x)
 
   return sha1.compute(k1 & arr)
 
@@ -68,7 +69,8 @@ proc hmacSha1*(key, message: string): SHA1Digest =
 proc signature*(consumerSecret, accessTokenSecret, httpMethod, url: string, params: Table): string =
   var keys: seq[string] = @[]
 
-  for x, y in params: keys.add(x)
+  for key in params.keys:
+    keys.add(key)
 
   keys.sort(cmpIgnoreCase)
 
@@ -106,7 +108,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
                                         twitter.accessTokenSecret,
                                         httpMethod, url, params)
 
-  for x, y in params: keys.add(x)
+  for key in params.keys:
+    keys.add(key)
 
   var authorizeKeys = keys.filter(proc(x: string): bool = x.startsWith("oauth_"))
   var authorize = "OAuth " & authorizeKeys.mapIt(string, $(it & "=" & params[it])).join(",")
