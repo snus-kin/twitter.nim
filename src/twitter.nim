@@ -153,6 +153,11 @@ proc statusesUpdate*(twitter: TwitterAPI,
   return post(twitter, "statuses/update.json", additionalParams)
 
 
+proc userTimeline*(twitter: TwitterAPI,
+                   additionalParams: Table[string, string] = initTable[string, string]()): Response =
+  return get(twitter, "statuses/user_timeline.json", additionalParams)
+
+
 template callAPI*(twitter: expr,
                   api: expr,
                   additionalParams: expr): expr =
