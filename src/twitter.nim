@@ -168,6 +168,11 @@ proc mentionsTimeline*(twitter: TwitterAPI,
   return get(twitter, "statuses/mentions_timeline.json", additionalParams)
 
 
+proc retweetsOfMe*(twitter: TwitterAPI,
+                   additionalParams: Table[string, string] = initTable[string, string]()): Response =
+  return get(twitter, "statuses/retweets_of_me.json", additionalParams)
+
+
 template callAPI*(twitter: expr,
                   api: expr,
                   additionalParams: expr): expr =
