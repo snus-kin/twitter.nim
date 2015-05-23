@@ -173,7 +173,7 @@ proc retweetsOfMe*(twitter: TwitterAPI,
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
-template callAPI*(twitter: expr,
+template callAPI*(twitter: TwitterAPI,
                   api: expr,
-                  additionalParams: expr): expr =
+                  additionalParams: Table[string, string] = initTable[string, string]()): expr =
   api(twitter, additionalParams)
