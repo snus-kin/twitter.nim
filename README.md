@@ -2,6 +2,15 @@
 
 Low-level twitter API wrapper library for nim.
 
+## Installation
+
+from github:
+
+```
+$ git clone git://github.com/kubo39/twitter.nim
+$ cd && nimble install
+```
+
 ## Example
 
 ```nimrod
