@@ -46,7 +46,7 @@ proc newTwitterAPI*(consumerKey, consumerSecret, accessToken, accessTokenSecret:
 
 
 # Stolen from cgi.nim
-proc encodeUrl*(s: string): string =
+proc encodeUrl(s: string): string =
   # Exclude A..Z a..z 0..9 - . _ ~
   # See https://dev.twitter.com/oauth/overview/percent-encoding-parameters
   result = newStringOfCap(s.len + s.len shr 2) # assume 12% non-alnum-chars
@@ -67,7 +67,7 @@ proc padding(k: seq[uint8]): seq[uint8] =
     return k & newSeq[uint8](64 - k.len)
 
 
-proc hmacSha1*(key, message: string): SHA1Digest =
+proc hmacSha1(key, message: string): SHA1Digest =
   var k1: seq[uint8] = padding(cast[seq[uint8]](key))
   var k2: seq[uint8] = padding(cast[seq[uint8]](key))
 
@@ -82,7 +82,7 @@ proc hmacSha1*(key, message: string): SHA1Digest =
   return sha1.compute(k1 & arr)
 
 
-proc signature*(consumerSecret, accessTokenSecret, httpMethod, url: string, params: Table): string =
+proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, params: Table): string =
   var keys: seq[string] = @[]
 
   for key in params.keys:
