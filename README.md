@@ -8,7 +8,7 @@ from github:
 
 ```
 $ git clone git://github.com/kubo39/twitter.nim
-$ cd && nimble install
+$ cd twitter.nim && nimble install
 ```
 
 ## Example
