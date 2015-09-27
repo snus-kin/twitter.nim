@@ -17,10 +17,13 @@ $ cd twitter.nim && nimble install
 import twitter, tables, json
 
 when isMainModule:
-  var consumerToken = newConsumerToken("Your Consumer Key", "Your Consumer Secret")
+  var parsed = parseFile("credential.json")
+
+  var consumerToken = newConsumerToken(parsed["ConsumerKey"].str,
+                                       parsed["ConsumerSecret"].str)
   var twitterAPI = newTwitterAPI(consumerToken,
-                                 "Your Access Token",
-                                 "Your Access Token Secret")
+                                 parsed["AccessToken"].str,
+                                 parsed["AccessTokenSecret"].str)
 
   # Simply get.
   var resp = twitterAPI.get("account/verify_credentials.json")
@@ -36,6 +39,5 @@ when isMainModule:
   resp = twitterAPI.callAPI(statusesUpdate, testStatus)
   echo parseJson(resp.body)
 ```
-
 
 Many thanks to https://github.com/alphaKAI/twitter4d !
