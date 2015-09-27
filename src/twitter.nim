@@ -12,7 +12,6 @@ import sha1
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
-const oauthBaseUrl = "https://api.twitter.com/oauth/"
 
 
 type ConsumerToken* = object
