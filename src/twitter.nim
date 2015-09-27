@@ -1,6 +1,6 @@
 import algorithm
 import base64
-import tables
+import strtabs
 import times
 import strutils
 import sequtils
@@ -81,7 +81,7 @@ proc hmacSha1(key, message: string): SHA1Digest =
   return sha1.compute(k1 & arr)
 
 
-proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, params: Table): string =
+proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, params: StringTableRef): string =
   var keys: seq[string] = @[]
 
   for key in params.keys:
@@ -97,15 +97,14 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
 
 proc buildParams(consumerKey, accessToken: string,
-                 additionalParams: Table[string, string] = initTable[string, string]()
-                 ): Table[string, string] =
-  var params: Table[string, string] = initTable[string, string]()
-  params["oauth_version"] = "1.0"
-  params["oauth_consumer_key"] = consumerKey
-  params["oauth_nonce"] = generateUUID()
-  params["oauth_signature_method"] = "HMAC-SHA1"
-  params["oauth_timestamp"] = epochTime().toInt.repr
-  params["oauth_token"] = accessToken
+                 additionalParams: StringTableRef = {"": ""}.newStringTable
+                 ): StringTableRef =
+  var params: StringTableRef = { "oauth_version": "1.0",
+                                 "oauth_consumer_key": consumerKey,
+                                 "oauth_nonce": generateUUID(),
+                                 "oauth_signature_method": "HMAC-SHA1",
+                                 "oauth_timestamp": epochTime().toInt.repr,
+                                 "oauth_token": accessToken }.newStringTable
 
   for key, value in params: params[key] = encodeUrl(value)
   for key, value in additionalParams: params[key] = encodeUrl(value)
@@ -113,13 +112,13 @@ proc buildParams(consumerKey, accessToken: string,
 
 
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
-              additionalParams: Table[string, string] = initTable[string, string]()): Response =
+              additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   let url = baseUrl & endPoint
   var keys: seq[string] = @[]
 
-  var params: Table[string, string] = buildParams(twitter.consumerToken.consumerKey,
-                                                  twitter.accessToken,
-                                                  additionalParams)
+  var params = buildParams(twitter.consumerToken.consumerKey,
+                           twitter.accessToken,
+                           additionalParams)
   params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
                                         twitter.accessTokenSecret,
                                         httpMethod, url, params)
@@ -138,45 +137,44 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
 
 
 proc get*(twitter: TwitterAPI, endPoint: string,
-          additionalParams: Table[string, string] = initTable[string, string]()): Response =
+          additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return request(twitter, endPoint, "GET", additionalParams)
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
-          additionalParams: Table[string, string] = initTable[string, string]()): Response =
+          additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return request(twitter, endPoint, "POST", additionalParams)
 
 
 proc statusesUpdate*(twitter: TwitterAPI,
-                    additionalParams: Table[string, string]): Response =
+                    additionalParams: StringTableRef): Response =
   return post(twitter, "statuses/update.json", additionalParams)
 
 
 proc userTimeline*(twitter: TwitterAPI,
-                   additionalParams: Table[string, string] = initTable[string, string]()): Response =
+                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return get(twitter, "statuses/user_timeline.json", additionalParams)
 
 
 proc homeTimeline*(twitter: TwitterAPI,
-                   additionalParams: Table[string, string] = initTable[string, string]()): Response =
+                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return get(twitter, "statuses/home_timeline.json", additionalParams)
 
 
 proc mentionsTimeline*(twitter: TwitterAPI,
-                       additionalParams: Table[string, string] = initTable[string, string]()): Response =
+                       additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return get(twitter, "statuses/mentions_timeline.json", additionalParams)
 
 
 proc retweetsOfMe*(twitter: TwitterAPI,
-                   additionalParams: Table[string, string] = initTable[string, string]()): Response =
+                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
 template callAPI*(twitter: TwitterAPI,
                   api: expr,
-                  additionalParams: Table[string, string] = initTable[string, string]()): expr =
+                  additionalParams: StringTableRef = {"": ""}.newStringTable): expr =
   api(twitter, additionalParams)
-
 
 
 when isMainModule:

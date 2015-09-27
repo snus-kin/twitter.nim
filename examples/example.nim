@@ -1,4 +1,4 @@
-import twitter, tables, json
+import twitter, json, strtabs
 
 when isMainModule:
   var parsed = parseFile("credential.json")
@@ -18,7 +18,6 @@ when isMainModule:
   echo parseJson(resp.body)
 
   # Using `callAPI` template.
-  var testStatus: Table[string, string] = initTable[string, string]()
-  testStatus["status"] = "test"
+  var testStatus = {"status": "test"}.newStringTable
   resp = twitterAPI.callAPI(statusesUpdate, testStatus)
   echo parseJson(resp.body)
