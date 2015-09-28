@@ -14,15 +14,19 @@ import sha1
 const baseUrl = "https://api.twitter.com/1.1/"
 
 
-type ConsumerToken* = object
-  consumerKey: string
-  consumerSecret: string
+type
+  ConsumerTokenImpl = object
+    consumerKey: string
+    consumerSecret: string
 
+  ConsumerToken* = ref ConsumerTokenImpl
 
-type TwitterAPI* = object
-  consumerToken: ConsumerToken
-  accessToken: string
-  accessTokenSecret: string
+  TwitterAPIImpl = object
+    consumerToken: ConsumerToken
+    accessToken: string
+    accessTokenSecret: string
+
+  TwitterAPI* = ref TwitterAPIImpl
 
 
 proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
