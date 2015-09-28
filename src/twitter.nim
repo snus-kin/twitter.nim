@@ -101,7 +101,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
 
 proc buildParams(consumerKey, accessToken: string,
-                 additionalParams: StringTableRef = {"": ""}.newStringTable): StringTableRef =
+                 additionalParams: StringTableRef = nil): StringTableRef =
   var params: StringTableRef = { "oauth_version": "1.0",
                                  "oauth_consumer_key": consumerKey,
                                  "oauth_nonce": generateUUID(),
@@ -111,13 +111,14 @@ proc buildParams(consumerKey, accessToken: string,
 
   for key, value in params:
     params[key] = encodeUrl(value)
-  for key, value in additionalParams:
-    params[key] = encodeUrl(value)
+  if additionalParams != nil:
+    for key, value in additionalParams:
+      params[key] = encodeUrl(value)
   return params
 
 
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
-              additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+              additionalParams: StringTableRef = nil): Response =
   let url = baseUrl & endPoint
   var keys: seq[string] = @[]
 
@@ -142,43 +143,42 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
 
 
 proc get*(twitter: TwitterAPI, endPoint: string,
-          additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+          additionalParams: StringTableRef = nil): Response =
   return request(twitter, endPoint, "GET", additionalParams)
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
-           additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+           additionalParams: StringTableRef = nil): Response =
   return request(twitter, endPoint, "POST", additionalParams)
 
 
 proc statusesUpdate*(twitter: TwitterAPI,
-                    additionalParams: StringTableRef): Response =
+                    additionalParams: StringTableRef = nil): Response =
   return post(twitter, "statuses/update.json", additionalParams)
 
 
 proc userTimeline*(twitter: TwitterAPI,
-                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+                   additionalParams: StringTableRef = nil): Response =
   return get(twitter, "statuses/user_timeline.json", additionalParams)
 
 
 proc homeTimeline*(twitter: TwitterAPI,
-                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+                   additionalParams: StringTableRef = nil): Response =
   return get(twitter, "statuses/home_timeline.json", additionalParams)
 
 
 proc mentionsTimeline*(twitter: TwitterAPI,
-                       additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+                       additionalParams: StringTableRef = nil): Response =
   return get(twitter, "statuses/mentions_timeline.json", additionalParams)
 
 
 proc retweetsOfMe*(twitter: TwitterAPI,
-                   additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+                   additionalParams: StringTableRef = nil): Response =
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
-template callAPI*(twitter: TwitterAPI,
-                  api: expr,
-                  additionalParams: StringTableRef = {"": ""}.newStringTable): expr =
+template callAPI*(twitter: TwitterAPI, api: expr,
+                  additionalParams: StringTableRef = nil): expr =
   api(twitter, additionalParams)
 
 
