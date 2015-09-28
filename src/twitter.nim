@@ -63,7 +63,8 @@ proc encodeUrl(s: string): string =
 proc padding(k: seq[uint8]): seq[uint8] =
   if 64 < k.len:
     var arr = newSeq[uint8]()
-    for i, x in sha1.compute(cast[string](k)): arr.insert(x, i)
+    for i, x in sha1.compute(cast[string](k)):
+      arr.insert(x, i)
     return arr & newSeq[uint8](64 - arr.len)
   else:
     return k & newSeq[uint8](64 - k.len)
@@ -100,8 +101,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
 
 proc buildParams(consumerKey, accessToken: string,
-                 additionalParams: StringTableRef = {"": ""}.newStringTable
-                 ): StringTableRef =
+                 additionalParams: StringTableRef = {"": ""}.newStringTable): StringTableRef =
   var params: StringTableRef = { "oauth_version": "1.0",
                                  "oauth_consumer_key": consumerKey,
                                  "oauth_nonce": generateUUID(),
@@ -109,8 +109,10 @@ proc buildParams(consumerKey, accessToken: string,
                                  "oauth_timestamp": epochTime().toInt.repr,
                                  "oauth_token": accessToken }.newStringTable
 
-  for key, value in params: params[key] = encodeUrl(value)
-  for key, value in additionalParams: params[key] = encodeUrl(value)
+  for key, value in params:
+    params[key] = encodeUrl(value)
+  for key, value in additionalParams:
+    params[key] = encodeUrl(value)
   return params
 
 
@@ -145,7 +147,7 @@ proc get*(twitter: TwitterAPI, endPoint: string,
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
-          additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
+           additionalParams: StringTableRef = {"": ""}.newStringTable): Response =
   return request(twitter, endPoint, "POST", additionalParams)
 
 
