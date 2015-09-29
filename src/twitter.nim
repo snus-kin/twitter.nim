@@ -61,13 +61,13 @@ proc encodeUrl(s: string): string =
 
 
 proc padding(k: seq[uint8]): seq[uint8] =
-  if 64 < k.len:
-    var arr = newSeq[uint8]()
+  if k.len > 64:
+    var arr = newSeq[uint8](64)
     for i, x in sha1.compute(cast[string](k)):
-      arr.insert(x, i)
-    return arr & newSeq[uint8](64 - arr.len)
+      arr[i] = x
+    return arr
   else:
-    return k & newSeq[uint8](64 - k.len)
+    return k
 
 
 proc hmacSha1(key, message: string): SHA1Digest =
