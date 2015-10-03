@@ -11,6 +11,7 @@ import sha1
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
+const clientUserAgent = "twitter.nim/0.1.0"
 
 
 type
@@ -137,9 +138,11 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let path = keys.mapIt(string, $(it & "=" & params[it])).join("&")
 
   if httpMethod == "GET":
-    return httpclient.get(url & "?" & path, "Authorization: " & authorize & "\c\L")
+    return httpclient.get(url & "?" & path, "Authorization: " & authorize & "\c\L",
+                          userAgent = clientUserAgent)
   elif httpMethod == "POST":
-    return httpclient.post(url & "?" & path, "Authorization: " & authorize & "\c\L")
+    return httpclient.post(url & "?" & path, "Authorization: " & authorize & "\c\L",
+                           userAgent = clientUserAgent)
 
 
 proc get*(twitter: TwitterAPI, endPoint: string,
