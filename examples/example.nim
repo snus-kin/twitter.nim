@@ -13,6 +13,10 @@ when isMainModule:
   var resp = twitterAPI.get("account/verify_credentials.json")
   echo resp.status
 
+  # ditto, but selected by screen name.
+  resp = twitterAPI.user("shitsyndrome")
+  echo resp.status
+
   # Using proc corresponding twitter REST APIs.
   resp = twitterAPI.userTimeline()
   echo parseJson(resp.body)

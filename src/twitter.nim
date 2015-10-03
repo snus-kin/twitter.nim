@@ -180,6 +180,29 @@ proc retweetsOfMe*(twitter: TwitterAPI,
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
+proc user*(twitter: TwitterAPI,
+           additionalParams: StringTableRef = nil): Response =
+  return get(twitter, "account/verify_credentials.json", additionalParams)
+
+
+proc user*(twitter: TwitterAPI, screenName: string,
+           additionalParams: StringTableRef = nil): Response =
+  if additionalParams != nil:
+    additionalParams["screen_name"] = screenName
+    return get(twitter, "users/show.json", additionalParams)
+  else:
+    return get(twitter, "users/show.json", {"screen_name": screenName}.newStringTable)
+
+
+proc user*(twitter: TwitterAPI, userId: int32,
+           additionalParams: StringTableRef = nil): Response =
+  if additionalParams != nil:
+    additionalParams["user_id"] = userId.repr
+    return get(twitter, "users/show.json", additionalParams)
+  else:
+    return get(twitter, "users/show.json", {"user_id": userId.repr}.newStringTable)
+
+
 template callAPI*(twitter: TwitterAPI, api: expr,
                   additionalParams: StringTableRef = nil): expr =
   api(twitter, additionalParams)
