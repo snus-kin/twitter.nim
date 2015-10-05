@@ -1,4 +1,4 @@
-# twitter.nim
+# twitter.nim [![Circle CI](https://circleci.com/gh/kubo39/twitter.nim.svg?style=svg)](https://circleci.com/gh/kubo39/twitter.nim)
 
 Low-level twitter API wrapper library for nim.
 
