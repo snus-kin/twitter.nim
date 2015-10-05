@@ -19,4 +19,9 @@ dependencies:
 test:
   override:
     - |
+        # Test without nimble
+        git clone --depth 1 git://github.com/onionhammer/sha1
+        mv sha1/sha1.nim src
+        git clone --depth 1 git://github.com/wheineman/nim-only-uuid
+        mv nim-only-uuid/nuuid.nim src
         nim c -r src/twitter.nim
