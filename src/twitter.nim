@@ -107,7 +107,7 @@ proc buildParams(consumerKey, accessToken: string,
                                  "oauth_consumer_key": consumerKey,
                                  "oauth_nonce": generateUUID(),
                                  "oauth_signature_method": "HMAC-SHA1",
-                                 "oauth_timestamp": epochTime().toInt.repr,
+                                 "oauth_timestamp": $(epochTime().toInt),
                                  "oauth_token": accessToken }.newStringTable
 
   for key, value in params:
@@ -197,10 +197,10 @@ proc user*(twitter: TwitterAPI, screenName: string,
 proc user*(twitter: TwitterAPI, userId: int32,
            additionalParams: StringTableRef = nil): Response =
   if additionalParams != nil:
-    additionalParams["user_id"] = userId.repr
+    additionalParams["user_id"] = $userId
     return get(twitter, "users/show.json", additionalParams)
   else:
-    return get(twitter, "users/show.json", {"user_id": userId.repr}.newStringTable)
+    return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
 
 
 template callAPI*(twitter: TwitterAPI, api: expr,
