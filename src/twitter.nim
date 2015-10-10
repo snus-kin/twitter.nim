@@ -94,7 +94,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
   keys.sort(cmpIgnoreCase)
 
-  let query: string = keys.mapIt(string, $(it & "=" & params[it])).join("&")
+  let query: string = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let key: string = encodeUrl(consumerSecret) & "&" & encodeUrl(accessTokenSecret)
   let base: string = httpMethod & "&" & encodeUrl(url) & "&" & encodeUrl(query)
 
@@ -134,8 +134,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     keys.add(key)
 
   let authorizeKeys = keys.filter(proc(x: string): bool = x.startsWith("oauth_"))
-  let authorize = "OAuth " & authorizeKeys.mapIt(string, $(it & "=" & params[it])).join(",")
-  let path = keys.mapIt(string, $(it & "=" & params[it])).join("&")
+  let authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
 
   if httpMethod == "GET":
     return httpclient.get(url & "?" & path, "Authorization: " & authorize & "\c\L",
