@@ -75,8 +75,8 @@ proc hmacSha1(key, message: string): SHA1Digest =
   var k1: seq[uint8] = padding(cast[seq[uint8]](key))
   var k2: seq[uint8] = padding(cast[seq[uint8]](key))
 
-  k1.mapIt(it xor 0x5c)
-  k2.mapIt(it xor 0x36)
+  k1.apply(proc(x: var uint8) = x = x xor 0x5c)
+  k2.apply(proc(x: var uint8) = x = x xor 0x36)
 
   var arr: seq[uint8] = @[]
 
