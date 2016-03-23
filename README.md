@@ -1,13 +1,13 @@
-# twitter.nim [![Circle CI](https://circleci.com/gh/kubo39/twitter.nim.svg?style=svg)](https://circleci.com/gh/kubo39/twitter.nim)
+# twitter [![Circle CI](https://circleci.com/gh/kubo39/twitter.svg?style=svg)](https://circleci.com/gh/kubo39/twitter)
 
-Low-level twitter API wrapper library for nim.
+Low-level twitter API wrapper library for Nim.
 
 ## Installation
 
 from github:
 
 ```
-$ git clone git://github.com/kubo39/twitter.nim
+$ git clone git://github.com/kubo39/twitter
 $ cd twitter.nim && nimble install
 ```
 
