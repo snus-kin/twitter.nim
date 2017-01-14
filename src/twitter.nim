@@ -6,8 +6,8 @@ import strutils
 import sequtils
 import httpclient
 
-import nuuid
 import sha1
+import uuids
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
@@ -105,7 +105,7 @@ proc buildParams(consumerKey, accessToken: string,
                  additionalParams: StringTableRef = nil): StringTableRef =
   var params: StringTableRef = { "oauth_version": "1.0",
                                  "oauth_consumer_key": consumerKey,
-                                 "oauth_nonce": generateUUID(),
+                                 "oauth_nonce": $genUUID(),
                                  "oauth_signature_method": "HMAC-SHA1",
                                  "oauth_timestamp": $(epochTime().toInt),
                                  "oauth_token": accessToken }.newStringTable
