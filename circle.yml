@@ -23,5 +23,5 @@ test:
         git clone --depth 1 git://github.com/onionhammer/sha1
         mv sha1/sha1.nim src
         git clone --depth 1 git://github.com/pragmagic/uuids
-        mv uuid/*.nim src
+        mv uuids/*.nim src
         nim c -r src/twitter.nim
