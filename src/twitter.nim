@@ -1,12 +1,13 @@
 import algorithm
 import base64
-import strtabs
-import times
-import strutils
-import sequtils
 import httpclient
+import sequtils
+import strtabs
+import strutils
+import times
 
-import sha1
+import std/sha1
+
 import uuids
 
 
@@ -55,7 +56,8 @@ proc encodeUrl(s: string): string =
   result = newStringOfCap(s.len + s.len shr 2) # assume 12% non-alnum-chars
   for i in 0..s.len-1:
     case s[i]
-    of 'a'..'z', 'A'..'Z', '0'..'9', '_', '-', '.', '~': add(result, s[i])
+    of 'a'..'z', 'A'..'Z', '0'..'9', '_', '-', '.', '~':
+      add(result, s[i])
     else:
       add(result, '%')
       add(result, toHex(ord(s[i]), 2))
@@ -64,7 +66,7 @@ proc encodeUrl(s: string): string =
 proc padding(k: seq[uint8]): seq[uint8] =
   if k.len > 64:
     var arr = newSeq[uint8](64)
-    for i, x in sha1.compute(cast[string](k)):
+    for i, x in $secureHash(cast[string](k)):
       arr[i] = x
     return arr
   else:
@@ -80,10 +82,10 @@ proc hmacSha1(key, message: string): SHA1Digest =
 
   var arr: seq[uint8] = @[]
 
-  for x in sha1.compute(cast[string](k2) & message):
+  for x in $secureHash(cast[string](k2) & message):
     arr.add(x)
 
-  return sha1.compute(k1 & arr)
+  return $secureHash(k1 & arr)
 
 
 proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, params: StringTableRef): string =
