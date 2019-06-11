@@ -6,7 +6,7 @@ Low-level twitter API wrapper library for Nim.
 
 from github:
 
-```
+```console
 $ git clone git://github.com/kubo39/twitter
 $ cd twitter.nim && nimble install
 ```
