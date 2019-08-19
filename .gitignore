@@ -3,3 +3,4 @@ src/twitter
 examples/example
 examples/credential.json
 nimcache/
+*.swp

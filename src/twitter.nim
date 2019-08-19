@@ -9,10 +9,11 @@ import times
 import std/sha1
 
 import uuids
+import hmac
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
-const clientUserAgent = "twitter.nim/0.1.0"
+const clientUserAgent = "twitter.nim/0.2.1"
 
 
 type
@@ -63,31 +64,6 @@ proc encodeUrl(s: string): string =
       add(result, toHex(ord(s[i]), 2))
 
 
-proc padding(k: seq[uint8]): seq[uint8] =
-  if k.len > 64:
-    var arr = newSeq[uint8](64)
-    for i, x in $secureHash(cast[string](k)):
-      arr[i] = x
-    return arr
-  else:
-    return k
-
-
-proc hmacSha1(key, message: string): SHA1Digest =
-  var k1: seq[uint8] = padding(cast[seq[uint8]](key))
-  var k2: seq[uint8] = padding(cast[seq[uint8]](key))
-
-  k1.apply(proc(x: var uint8) = x = x xor 0x5c)
-  k2.apply(proc(x: var uint8) = x = x xor 0x36)
-
-  var arr: seq[uint8] = @[]
-
-  for x in $secureHash(cast[string](k2) & message):
-    arr.add(x)
-
-  return $secureHash(k1 & arr)
-
-
 proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, params: StringTableRef): string =
   var keys: seq[string] = @[]
 
@@ -100,7 +76,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
   let key: string = encodeUrl(consumerSecret) & "&" & encodeUrl(accessTokenSecret)
   let base: string = httpMethod & "&" & encodeUrl(url) & "&" & encodeUrl(query)
 
-  return encodeUrl(hmacSha1(key, base).toBase64)
+  return encodeUrl(encode(hmac_sha1(key, base)))
 
 
 proc buildParams(consumerKey, accessToken: string,
@@ -138,13 +114,13 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let authorizeKeys = keys.filter(proc(x: string): bool = x.startsWith("oauth_"))
   let authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
   let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
+  let client = newHttpClient(userAgent = clientUserAgent)
+  client.headers = newHttpHeaders({ "Authorization": authorize })
 
   if httpMethod == "GET":
-    return httpclient.get(url & "?" & path, "Authorization: " & authorize & "\c\L",
-                          userAgent = clientUserAgent)
+    return httpclient.get(client, url & "?" & path)
   elif httpMethod == "POST":
-    return httpclient.post(url & "?" & path, "Authorization: " & authorize & "\c\L",
-                           userAgent = clientUserAgent)
+    return httpclient.post(client, url & "?" & path)
 
 
 proc get*(twitter: TwitterAPI, endPoint: string,
@@ -205,8 +181,8 @@ proc user*(twitter: TwitterAPI, userId: int32,
     return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
 
 
-template callAPI*(twitter: TwitterAPI, api: expr,
-                  additionalParams: StringTableRef = nil): expr =
+template callAPI*(twitter: TwitterAPI, api: untyped,
+                  additionalParams: StringTableRef = nil): untyped =
   api(twitter, additionalParams)
 
 
@@ -225,5 +201,5 @@ when isMainModule:
   suite "test for hmacSha1":
     # https://dev.twitter.com/oauth/overview/creating-signatures
     test "test for hmacSha1 function.":
-      check(hmacSha1("kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE",
-                     "POST&https%3A%2F%2Fapi.twitter.com%2F1%2Fstatuses%2Fupdate.json&include_entities%3Dtrue%26oauth_consumer_key%3Dxvz1evFS4wEEPTGEFPHBog%26oauth_nonce%3DkYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1318622958%26oauth_token%3D370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb%26oauth_version%3D1.0%26status%3DHello%2520Ladies%2520%252B%2520Gentlemen%252C%2520a%2520signed%2520OAuth%2520request%2521").toBase64 == "tnnArxj06cWHq44gCs1OSKk/jLY=")
+      check(encode(hmac_sha1("kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE",
+                     "POST&https%3A%2F%2Fapi.twitter.com%2F1%2Fstatuses%2Fupdate.json&include_entities%3Dtrue%26oauth_consumer_key%3Dxvz1evFS4wEEPTGEFPHBog%26oauth_nonce%3DkYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1318622958%26oauth_token%3D370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb%26oauth_version%3D1.0%26status%3DHello%2520Ladies%2520%252B%2520Gentlemen%252C%2520a%2520signed%2520OAuth%2520request%2521")) == "tnnArxj06cWHq44gCs1OSKk/jLY=")
