@@ -2,14 +2,15 @@
 
 Low-level twitter API wrapper library for Nim.
 
-All of work from https://github.com/kubo39/twitter
+Special thanks to kubo39 for creating the package.
+Originally from https://github.com/kubo39/twitter
 
 ## Installation
 
 from github:
 
 ```console
-$ git clone git://github.com/dchem/twitter
+$ git clone git://github.com/dchem/twitter.nim
 $ cd twitter.nim && nimble install
 ```
 

@@ -13,7 +13,7 @@ import hmac
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
-const clientUserAgent = "twitter.nim/0.2.1"
+const clientUserAgent = "twitter.nim/0.2.2"
 
 
 type
