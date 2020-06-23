@@ -40,4 +40,10 @@ when isMainModule:
   var testStatus = {"status": "test"}.newStringTable
   resp = twitterAPI.callAPI(statusesUpdate, testStatus)
   echo parseJson(resp.body)
+
+  # Upload media
+  var ubody = {"media_type": "twitter_image"}.newStringTable
+  var image = readFile("example.png")
+  resp = twitterAPI.post("media/upload.json", ubody, media=true, data=image)
+  echo parseJson(resp.body)
 ```
