@@ -11,6 +11,7 @@ import hmac
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
+const uploadUrl = "https://upload.twitter.com/1.1/"
 const clientUserAgent = "twitter.nim/0.2.2"
 
 
@@ -76,7 +77,6 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
   return encodeUrl(encode(hmac_sha1(key, base)))
 
-
 proc buildParams(consumerKey, accessToken: string,
                  additionalParams: StringTableRef = nil): StringTableRef =
   var params: StringTableRef = { "oauth_version": "1.0",
@@ -95,8 +95,9 @@ proc buildParams(consumerKey, accessToken: string,
 
 
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
-              additionalParams: StringTableRef = nil): Response =
-  let url = baseUrl & endPoint
+              additionalParams: StringTableRef = nil,
+              requestUrl: string = baseUrl, data: string = ""): Response =
+  let url = requestUrl & endPoint
   var keys: seq[string] = @[]
 
   var params = buildParams(twitter.consumerToken.consumerKey,
@@ -114,22 +115,31 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({ "Authorization": authorize })
+  
+  if data != "":
+    var mediaMultipart = newMultiPartData()
+    mediaMultipart["media"] = data
+    if httpMethod == "POST":
+      return httpclient.post(client, url & "?" & path, multipart=mediaMultipart)
 
   if httpMethod == "GET":
     return httpclient.get(client, url & "?" & path)
   elif httpMethod == "POST":
     return httpclient.post(client, url & "?" & path)
 
-
 proc get*(twitter: TwitterAPI, endPoint: string,
-          additionalParams: StringTableRef = nil): Response =
+          additionalParams: StringTableRef = nil, media: bool = false): Response =
+  if media:
+    return request(twitter, endPoint, "GET", additionalParams, requestUrl=uploadUrl)
   return request(twitter, endPoint, "GET", additionalParams)
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
-           additionalParams: StringTableRef = nil): Response =
+           additionalParams: StringTableRef = nil, media: bool = false,
+           data: string = ""): Response =
+  if media:
+    return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
   return request(twitter, endPoint, "POST", additionalParams)
-
 
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
