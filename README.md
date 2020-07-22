@@ -7,16 +7,16 @@ Originally from https://github.com/kubo39/twitter
 
 ## Installation
 
-from github:
+From github:
 
 ```console
-$ git clone git://github.com/dchem/twitter.nim
+$ git clone git://github.com/snus-kin/twitter.nim
 $ cd twitter.nim && nimble install
 ```
 
 ## Example
 
-```nimrod
+```nim
 import twitter, json, strtabs
 
 when isMainModule:
