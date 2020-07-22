@@ -147,8 +147,8 @@ proc post*(twitter: TwitterAPI, endPoint: string,
   return request(twitter, endPoint, "POST", additionalParams)
 
 
-proc post*(twitter: TwitterAPI, endPoint: string,
-           additionalParams: StringTableRef = nil, media: bool = false,
+proc post*(twitter: TwitterAPI, endPoint: string, 
+           additionalParams: StringTableRef = nil, media: bool = false, 
            data: string): Response =
   ## Overload for post that includes binary data e.g. images / video to upload
   if media:
@@ -204,6 +204,16 @@ proc user*(twitter: TwitterAPI, userId: int32,
     return get(twitter, "users/show.json", additionalParams)
   else:
     return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+
+
+proc uploadFile*(twitter: TwitterAPI, filename: string,
+                 mediaType: string, additionalParams: StringTableRef = nil): Response =
+  ## Upload a file from a filename, mediaType takes these arguments: amplify_video, tweet_gif, tweet_image, and tweet_video
+  # This proc probably _wont_ work so well with video, TODO chunked video uploads
+  var ubody = additionalParams
+  ubody["media_type"] = mediaType
+  let data = string readFile(filename)
+  return post(twitter, "media/upload.json", ubody, true, data)
 
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
