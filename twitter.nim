@@ -131,14 +131,24 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
 
 proc get*(twitter: TwitterAPI, endPoint: string,
           additionalParams: StringTableRef = nil, media: bool = false): Response =
+  ## Raw get function, media optional parameter enables requests to the twitter media endpoints
   if media:
     return request(twitter, endPoint, "GET", additionalParams, requestUrl=uploadUrl)
   return request(twitter, endPoint, "GET", additionalParams)
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
+           additionalParams: StringTableRef = nil, media: bool = false): Response =
+  ## Raw post function, media optional parameter enables requests to the twitter media endpoints
+  if media:
+    return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl)
+  return request(twitter, endPoint, "POST", additionalParams)
+
+
+proc post*(twitter: TwitterAPI, endPoint: string,
            additionalParams: StringTableRef = nil, media: bool = false,
-           data: string = ""): Response =
+           data: string): Response =
+  ## Overload for post that includes binary data e.g. images / video to upload
   if media:
     return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
   return request(twitter, endPoint, "POST", additionalParams)
@@ -176,6 +186,7 @@ proc user*(twitter: TwitterAPI,
 
 proc user*(twitter: TwitterAPI, screenName: string,
            additionalParams: StringTableRef = nil): Response =
+  ## users/show.json endpoint for screen names (@username)
   if additionalParams != nil:
     additionalParams["screen_name"] = screenName
     return get(twitter, "users/show.json", additionalParams)
@@ -185,6 +196,7 @@ proc user*(twitter: TwitterAPI, screenName: string,
 
 proc user*(twitter: TwitterAPI, userId: int32,
            additionalParams: StringTableRef = nil): Response =
+  ## users/show.json endpoint for user id (e.g. 783214 =is=> @twitter)
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
     return get(twitter, "users/show.json", additionalParams)
