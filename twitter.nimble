@@ -10,4 +10,3 @@ requires: "uuids >= 0.1.10, hmac >= 0.1.9"
 
 task test, "Runs tests":
   exec "nim c -r twitter.nim"
-  exec "rm twitter"
