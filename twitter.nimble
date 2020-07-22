@@ -1,5 +1,5 @@
 # Package
-version = "0.2.4"
+version = "0.2.5"
 author = "kubo39"
 description = "A twitter API wrapper for Nim."
 license = "MIT"
