@@ -39,7 +39,6 @@ when isMainModule:
   # APPEND
   var buffer = ""
   var segment = 0
-  var total = 0
   if not isNil(mediaStream):
     while not mediaStream.atEnd(): 
       buffer = mediaStream.readStr(buffersize)
@@ -52,7 +51,6 @@ when isMainModule:
         stderr.writeLine "Error when uploading"
         break
       segment += 1
-      total += len(buffer)
 
   # STATUS
   resp = twitterAPI.mediaUploadStatus(mediaId)
@@ -62,7 +60,6 @@ when isMainModule:
   # FINALIZE
   resp = twitterAPI.mediaUploadFinalize(mediaId)
   let final_media_id = parseJson(resp.body)["media_id_string"].getStr
-  echo final_media_id
   
   # Send a tweet with that media
   var mediaStatus = {"status": "This is an image upload test", "media_ids": final_media_id}.newStringTable
