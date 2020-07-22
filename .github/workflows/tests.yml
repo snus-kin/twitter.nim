@@ -1,17 +1,17 @@
 on:
   push:
     branches:
-      - image-upload
+      - main
   pull_request:
     branches: 
-      - master
+      - main
   workflow_dispatch:
 jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@image-upload
+      - uses: actions/checkout@main
       - uses: jiro4989/setup-nim-action@v1.0.5
       - run: nimble build -Y
       - run: nimble test -Y
