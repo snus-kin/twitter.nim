@@ -77,6 +77,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
 
   return encodeUrl(encode(hmac_sha1(key, base)))
 
+
 proc buildParams(consumerKey, accessToken: string,
                  additionalParams: StringTableRef = nil): StringTableRef =
   var params: StringTableRef = { "oauth_version": "1.0",
@@ -127,6 +128,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   elif httpMethod == "POST":
     return httpclient.post(client, url & "?" & path)
 
+
 proc get*(twitter: TwitterAPI, endPoint: string,
           additionalParams: StringTableRef = nil, media: bool = false): Response =
   if media:
@@ -140,6 +142,7 @@ proc post*(twitter: TwitterAPI, endPoint: string,
   if media:
     return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
   return request(twitter, endPoint, "POST", additionalParams)
+
 
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
@@ -195,7 +198,6 @@ template callAPI*(twitter: TwitterAPI, api: untyped,
 
 
 when isMainModule:
-
   import unittest
 
   suite "test for encodeUrl":
