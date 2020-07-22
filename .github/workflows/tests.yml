@@ -13,5 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: jiro4989/setup-nim-action@v1.0.5
-      - run: nimble build -Y
       - run: nimble test -Y
