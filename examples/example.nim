@@ -37,9 +37,9 @@ when isMainModule:
   let mediaId = initResp["media_id_string"].getStr
 
   # APPEND
-  var buffer = ""
-  var segment = 0
   if not isNil(mediaStream):
+    var buffer = ""
+    var segment = 0
     while not mediaStream.atEnd(): 
       buffer = mediaStream.readStr(buffersize)
       echo "Uploading segment: ", segment
