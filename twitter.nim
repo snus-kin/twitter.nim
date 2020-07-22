@@ -21,14 +21,15 @@ type
     consumerSecret: string
 
   ConsumerToken* = ref ConsumerTokenImpl
+  ## Consumer token with a consumerKey and consumerSecret
 
   TwitterAPIImpl = object
     consumerToken: ConsumerToken
     accessToken: string
     accessTokenSecret: string
 
-  TwitterAPI* = ref TwitterAPIImpl
-
+  TwitterAPI* = ref TwitterAPIImpl 
+  ## TwitterAPI token container with a consumerToken, accessToken, and accessTokenSecret
 
 proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
   return ConsumerToken(consumerKey: consumerKey,
@@ -51,8 +52,8 @@ proc newTwitterAPI*(consumerKey, consumerSecret, accessToken, accessTokenSecret:
 
 # Stolen from cgi.nim
 proc encodeUrl(s: string): string =
-  # Exclude A..Z a..z 0..9 - . _ ~
-  # See https://dev.twitter.com/oauth/overview/percent-encoding-parameters
+  ## Exclude A..Z a..z 0..9 - . _ ~
+  ## See https://dev.twitter.com/oauth/overview/percent-encoding-parameters
   result = newStringOfCap(s.len + s.len shr 2) # assume 12% non-alnum-chars
   for i in 0..s.len-1:
     case s[i]
@@ -117,6 +118,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({ "Authorization": authorize })
   
+  # Data must be a multiPartData and not a stringTable ref
   if data != "":
     var mediaMultipart = newMultiPartData()
     mediaMultipart["media"] = data
