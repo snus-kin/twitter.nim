@@ -1,4 +1,4 @@
-# twitter [![Circle CI](https://circleci.com/gh/dchem/twitter.nim.svg?style=svg)](https://circleci.com/gh/dchem/twitter.nim)
+# twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master)
 
 Low-level twitter API wrapper library for Nim.
 
