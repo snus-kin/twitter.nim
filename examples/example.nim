@@ -1,4 +1,4 @@
-import twitter, json, strtabs
+import twitter, json, strtabs, httpclient
 
 when isMainModule:
   var parsed = parseFile("credential.json")
