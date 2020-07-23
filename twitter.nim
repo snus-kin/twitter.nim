@@ -12,7 +12,7 @@ import hmac
 
 const baseUrl = "https://api.twitter.com/1.1/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
-const clientUserAgent = "twitter.nim/0.2.2"
+const clientUserAgent = "twitter.nim/0.2.5"
 
 
 type
@@ -42,7 +42,8 @@ proc newTwitterAPI*(consumerToken: ConsumerToken, accessToken, accessTokenSecret
                     accessTokenSecret: accessTokenSecret)
 
 
-proc newTwitterAPI*(consumerKey, consumerSecret, accessToken, accessTokenSecret: string): TwitterAPI =
+proc newTwitterAPI*(consumerKey, consumerSecret, 
+                    accessToken, accessTokenSecret: string): TwitterAPI =
   let consumerToken: ConsumerToken = ConsumerToken(consumerKey: consumerKey,
                                                    consumerSecret: consumerSecret)
   return TwitterAPI(consumerToken: consumerToken,
@@ -118,7 +119,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({ "Authorization": authorize })
   
-  # Data must be a multiPartData and not a stringTable ref
+  # Data must be in a multipart
   if data != "":
     var mediaMultipart = newMultiPartData()
     mediaMultipart["media"] = data
