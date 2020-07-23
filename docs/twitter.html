@@ -145,6 +145,21 @@ function main() {
     title="user(twitter: TwitterAPI; screenName: string; additionalParams: StringTableRef = nil): Response"><wbr />user<span class="attachedType">TwitterAPI</span></a></li>
   <li><a class="reference" href="#user%2CTwitterAPI%2Cint32%2CStringTableRef"
     title="user(twitter: TwitterAPI; userId: int32; additionalParams: StringTableRef = nil): Response"><wbr />user<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#uploadFile%2CTwitterAPI%2Cstring%2Cstring%2CStringTableRef"
+    title="uploadFile(twitter: TwitterAPI; filename: string; mediaType: string;
+           additionalParams: StringTableRef = nil): Response"><wbr />upload<wbr />File<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaUploadInit%2CTwitterAPI%2Cstring%2Cstring%2CStringTableRef"
+    title="mediaUploadInit(twitter: TwitterAPI; mediaType: string; totalBytes: string;
+                additionalParams: StringTableRef = nil): Response"><wbr />media<wbr />Upload<wbr />Init<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaUploadAppend%2CTwitterAPI%2Cstring%2Cstring%2Cstring%2CStringTableRef"
+    title="mediaUploadAppend(twitter: TwitterAPI; mediaId: string; segmentId: string;
+                  data: string; additionalParams: StringTableRef = nil): Response"><wbr />media<wbr />Upload<wbr />Append<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaUploadStatus%2CTwitterAPI%2Cstring%2CStringTableRef"
+    title="mediaUploadStatus(twitter: TwitterAPI; mediaId: string;
+                  additionalParams: StringTableRef = nil): Response"><wbr />media<wbr />Upload<wbr />Status<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaUploadFinalize%2CTwitterAPI%2Cstring%2CStringTableRef"
+    title="mediaUploadFinalize(twitter: TwitterAPI; mediaId: string;
+                    additionalParams: StringTableRef = nil): Response"><wbr />media<wbr />Upload<wbr />Finalize<span class="attachedType">TwitterAPI</span></a></li>
 
   </ul>
 </li>
@@ -172,6 +187,7 @@ function main() {
 <dd>
 
 
+Consumer token object with a <tt class="docutils literal"><span class="pre">consumerKey</span></tt> and <tt class="docutils literal"><span class="pre">consumerSecret</span></tt>
 
 </dd>
 <a id="TwitterAPI"></a>
@@ -179,6 +195,7 @@ function main() {
 <dd>
 
 
+TwitterAPI token object with a <tt class="docutils literal"><span class="pre">consumerToken</span></tt>, <tt class="docutils literal"><span class="pre">accessToken</span></tt>, and <tt class="docutils literal"><span class="pre">accessTokenSecret</span></tt>
 
 </dd>
 
@@ -230,7 +247,7 @@ function main() {
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Raw get function, media optional parameter enables requests to the twitter media endpoints
+Raw get proc. <tt class="docutils literal"><span class="pre">media</span></tt> optional parameter changes request URL to <tt class="docutils literal"><span class="pre">upload.twitter.com</span></tt>
 
 </dd>
 <a id="post,TwitterAPI,string,StringTableRef,bool"></a>
@@ -241,7 +258,7 @@ Raw get function, media optional parameter enables requests to the twitter media
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Raw post function, media optional parameter enables requests to the twitter media endpoints
+Raw post proc. <tt class="docutils literal"><span class="pre">media</span></tt> optional parameter changes request URL to <tt class="docutils literal"><span class="pre">upload.twitter.com</span></tt>
 
 </dd>
 <a id="post,TwitterAPI,string,StringTableRef,bool,string"></a>
@@ -262,7 +279,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">statuses/update.json</span></tt> endpoint
 
 </dd>
 <a id="userTimeline,TwitterAPI,StringTableRef"></a>
@@ -272,7 +289,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">statuses/user_timeline.json</span></tt> endpoint
 
 </dd>
 <a id="homeTimeline,TwitterAPI,StringTableRef"></a>
@@ -282,7 +299,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">statuses/home_timeline.json</span></tt> endpoint
 
 </dd>
 <a id="mentionsTimeline,TwitterAPI,StringTableRef"></a>
@@ -292,7 +309,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">statuses/mentions_timeline.json</span></tt> endpoint
 
 </dd>
 <a id="retweetsOfMe,TwitterAPI,StringTableRef"></a>
@@ -302,7 +319,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">statuses/retweets_of_me.json</span></tt> endpoint
 
 </dd>
 <a id="user,TwitterAPI,StringTableRef"></a>
@@ -312,7 +329,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">account/verify_credentials.json</span></tt> endpoint
 
 </dd>
 <a id="user,TwitterAPI,string,StringTableRef"></a>
@@ -322,7 +339,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-users/show.json endpoint for screen names (@username)
+<tt class="docutils literal"><span class="pre">users/show.json</span></tt> endpoint for screen names (@username)
 
 </dd>
 <a id="user,TwitterAPI,int32,StringTableRef"></a>
@@ -332,7 +349,72 @@ users/show.json endpoint for screen names (@username)
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-users/show.json endpoint for user id (e.g. 783214 =is=&gt; @twitter)
+<tt class="docutils literal"><span class="pre">users/show.json</span></tt> endpoint for user id (e.g. <tt class="docutils literal"><span class="pre">783214 =&gt; @twitter</span></tt>)
+
+</dd>
+<a id="uploadFile,TwitterAPI,string,string,StringTableRef"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#uploadFile%2CTwitterAPI%2Cstring%2Cstring%2CStringTableRef"><span class="Identifier">uploadFile</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">filename</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mediaType</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+               <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span>
+    <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>Upload a file from a filename</p>
+<p>mediaType takes these arguments: <tt class="docutils literal"><span class="pre">amplify_video, tweet_gif, tweet_image, tweet_video</span></tt></p>
+
+
+</dd>
+<a id="mediaUploadInit,TwitterAPI,string,string,StringTableRef"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaUploadInit%2CTwitterAPI%2Cstring%2Cstring%2CStringTableRef"><span class="Identifier">mediaUploadInit</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">mediaType</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">totalBytes</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+                    <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>INIT command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init</a></p>
+<p><tt class="docutils literal"><span class="pre">mediaType</span></tt> should be the MIME type for the data you are sending.</p>
+<p>The response returned from this will contain a media_id field that you need to provide to the other <tt class="docutils literal"><span class="pre">mediaUpload</span></tt> procs</p>
+
+
+</dd>
+<a id="mediaUploadAppend,TwitterAPI,string,string,string,StringTableRef"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaUploadAppend%2CTwitterAPI%2Cstring%2Cstring%2Cstring%2CStringTableRef"><span class="Identifier">mediaUploadAppend</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">mediaId</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">segmentId</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+                      <span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>APPEND command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append</a></p>
+<p>Appends a chunk of data to a media upload, can accept base64 or binary</p>
+
+
+</dd>
+<a id="mediaUploadStatus,TwitterAPI,string,StringTableRef"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaUploadStatus%2CTwitterAPI%2Cstring%2CStringTableRef"><span class="Identifier">mediaUploadStatus</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">mediaId</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+                      <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>STATUS command for media upload see: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status">https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status</a></p>
+<p>Used to check the processing status of an upload. This should only be run when <a class="reference external" href="#mediauploadfinalize">mediaUploadFinalize</a> returns a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field otherwise a 404 will be generated</p>
+
+
+</dd>
+<a id="mediaUploadFinalize,TwitterAPI,string,StringTableRef"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaUploadFinalize%2CTwitterAPI%2Cstring%2CStringTableRef"><span class="Identifier">mediaUploadFinalize</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">mediaId</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+                        <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p>FINALIZE command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize</a></p>
+<p>Used to tell twitter your upload is finished. Will return a response with a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field if further processing needs to be done use <a class="reference external" href="#mediauploadstatus">mediaUploadStatus</a> to poll until completion.</p>
+
 
 </dd>
 
@@ -345,6 +427,9 @@ users/show.json endpoint for user id (e.g. 783214 =is=&gt; @twitter)
                 <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">untyped</span></pre></dt>
 <dd>
 
+<p>Template to callAPI</p>
+<p>Example: <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">testStatus</span> <span class="Operator">=</span> <span class="Punctuation">{</span><span class="StringLit">&quot;status&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;test&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">newStringTable</span>
+<span class="Keyword">var</span> <span class="Identifier">resp</span> <span class="Operator">=</span> <span class="Identifier">twitterAPI</span><span class="Operator">.</span><span class="Identifier">callAPI</span><span class="Punctuation">(</span><span class="Identifier">statusesUpdate</span><span class="Punctuation">,</span> <span class="Identifier">testStatus</span><span class="Punctuation">)</span></pre></p>
 
 
 </dd>
@@ -358,7 +443,7 @@ users/show.json endpoint for user id (e.g. 783214 =is=&gt; @twitter)
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-22 15:58:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-23 17:55:11 UTC</small>
       </div>
     </div>
   </div>

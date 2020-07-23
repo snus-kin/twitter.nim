@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  documentation:
+    name: Generate documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: jiro4989/setup-nim-action@v1.0.5
+      - name: Install deps
+        run: nimble install -d
+      - name: Build documentation
+        run: |
+          cd docs
+          nim doc ../twitter.nim
+      - name: Commit if docs have changed
+        run: |-
+          git diff
+          git config --global user.email "tcarroll@snufk.in"
+          git config --global user.name "docsbot"
+          git diff --quiet || (git add docs/* && git commit -m "Auto-generated documentation")
+          git push
