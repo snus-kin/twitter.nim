@@ -124,6 +124,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     mediaMultipart["media"] = data
     if httpMethod == "POST":
       return httpclient.post(client, url & "?" & path, multipart=mediaMultipart)
+    else:
+      raise newException(ValueError, "Can only POST with data")
 
   if httpMethod == "GET":
     return httpclient.get(client, url & "?" & path)
@@ -147,8 +149,8 @@ proc post*(twitter: TwitterAPI, endPoint: string,
   return request(twitter, endPoint, "POST", additionalParams)
 
 
-proc post*(twitter: TwitterAPI, endPoint: string,
-           additionalParams: StringTableRef = nil, media: bool = false,
+proc post*(twitter: TwitterAPI, endPoint: string, 
+           additionalParams: StringTableRef = nil, media: bool = false, 
            data: string): Response =
   ## Overload for post that includes binary data e.g. images / video to upload
   if media:
@@ -204,6 +206,70 @@ proc user*(twitter: TwitterAPI, userId: int32,
     return get(twitter, "users/show.json", additionalParams)
   else:
     return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+
+
+proc uploadFile*(twitter: TwitterAPI, filename: string,
+                 mediaType: string, additionalParams: StringTableRef = nil): Response =
+  ## Upload a file from a filename, mediaType takes these arguments: `[amplify_video, tweet_gif, tweet_image, tweet_video]`
+  # This is a bit 'higher level' than the rest but IMO is routine enough and simple enough to make it useful
+  var ubody = additionalParams
+  ubody["media_type"] = mediaType
+  let data = $ readFile(filename)
+  return post(twitter, "media/upload.json", ubody, true, data)
+
+
+proc mediaUploadInit*(twitter: TwitterAPI, 
+                      mediaType: string, totalBytes: string, 
+                      additionalParams: StringTableRef = nil): Response =
+  ## INIT command for media upload 
+  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init
+  ## mediaType should be the MIME type for the data you are sending, 
+  ## The response returned from this will contain a media_id field that you need to provide to the other mediaUpload procs
+  # These need to be multipart form data 
+  var ubody = newStringTable()
+  if additionalParams != nil:
+    ubody = additionalParams
+  ubody["command"] = "INIT"
+  ubody["media_type"] = mediaType
+  ubody["total_bytes"] = totalBytes
+  return post(twitter, "media/upload.json", ubody, true)
+
+
+proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
+                        data: string, additionalParams: StringTableRef = nil): Response =
+  ## APPEND command for media upload 
+  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
+  # These need to be multipart form data 
+  var ubody = newStringTable()
+  if additionalParams != nil:
+    ubody = additionalParams
+  ubody["command"] = "APPEND"
+  ubody["media_id"] = mediaId
+  ubody["segment_index"] = segmentId
+  return post(twitter, "media/upload.json", ubody, true, data)
+
+
+proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
+           additionalParams: StringTableRef = nil): Response=
+  ## STATUS command for media upload see: https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
+  var ubody = newStringTable()
+  if additionalParams != nil:
+    ubody = additionalParams
+  ubody["command"] = "STATUS"
+  ubody["media_id"] = mediaId
+  return get(twitter, "media/upload.json", ubody, true)
+
+
+proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
+           additionalParams: StringTableRef = nil): Response=
+  ## FINALIZE command for media upload 
+  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize
+  var ubody = newStringTable()
+  if additionalParams != nil:
+    ubody = additionalParams
+  ubody["command"] = "FINALIZE"
+  ubody["media_id"] = mediaId
+  return post(twitter, "media/upload.json", ubody, true)
 
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
