@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: jiro4989/setup-nim-action@v1.0.5
       - name: Install deps
-        run: nimble install -d
+        run: nimble install -d -Y
       - name: Build documentation
         run: |
           cd docs
