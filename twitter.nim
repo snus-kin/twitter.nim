@@ -232,7 +232,7 @@ proc uploadFile*(twitter: TwitterAPI, filename: string,
 proc mediaUploadInit*(twitter: TwitterAPI, 
                       mediaType: string, totalBytes: string, 
                       additionalParams: StringTableRef = nil): Response =
-  ## INIT command for media upload 
+  ## `INIT` command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init
   ##
   ## `mediaType` should be the MIME type for the data you are sending.
@@ -250,7 +250,7 @@ proc mediaUploadInit*(twitter: TwitterAPI,
 
 proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
                         data: string, additionalParams: StringTableRef = nil): Response =
-  ## APPEND command for media upload 
+  ## `APPEND` command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
   ##
   ## Appends a chunk of data to a media upload, can accept base64 or binary
@@ -265,7 +265,7 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
 
 proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
-  ## STATUS command for media upload see:
+  ## `STATUS` command for media upload see:
   ## https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
   ##
   ## Used to check the processing status of an upload. This should only be run
@@ -281,7 +281,7 @@ proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
 
 proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
-  ## FINALIZE command for media upload 
+  ## `FINALIZE` command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize
   ##
   ## Used to tell twitter your upload is finished. Will return a response
