@@ -1,6 +1,6 @@
 # Package
 version = "0.2.5"
-author = "kubo39"
+author = "snus-kin"
 description = "A twitter API wrapper for Nim."
 license = "MIT"
 
