@@ -372,7 +372,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>INIT command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init</a></p>
+<p><tt class="docutils literal"><span class="pre">INIT</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init</a></p>
 <p><tt class="docutils literal"><span class="pre">mediaType</span></tt> should be the MIME type for the data you are sending.</p>
 <p>The response returned from this will contain a media_id field that you need to provide to the other <tt class="docutils literal"><span class="pre">mediaUpload</span></tt> procs</p>
 
@@ -386,7 +386,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>APPEND command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append</a></p>
+<p><tt class="docutils literal"><span class="pre">APPEND</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append</a></p>
 <p>Appends a chunk of data to a media upload, can accept base64 or binary</p>
 
 
@@ -399,7 +399,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>STATUS command for media upload see: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status">https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status</a></p>
+<p><tt class="docutils literal"><span class="pre">STATUS</span></tt> command for media upload see: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status">https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status</a></p>
 <p>Used to check the processing status of an upload. This should only be run when <a class="reference external" href="#mediauploadfinalize">mediaUploadFinalize</a> returns a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field otherwise a 404 will be generated</p>
 
 
@@ -412,7 +412,7 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p>FINALIZE command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize</a></p>
+<p><tt class="docutils literal"><span class="pre">FINALIZE</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize</a></p>
 <p>Used to tell twitter your upload is finished. Will return a response with a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field if further processing needs to be done use <a class="reference external" href="#mediauploadstatus">mediaUploadStatus</a> to poll until completion.</p>
 
 
@@ -443,7 +443,7 @@ Overload for post that includes binary data e.g. images / video to upload
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-23 17:55:11 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-23 18:07:36 UTC</small>
       </div>
     </div>
   </div>
