@@ -15,7 +15,7 @@ when isMainModule:
 
   # ditto, but selected by screen name.
   resp = twitterAPI.user("sn_fk_n")
-  echo resp.status
+  echo pretty parseJson(resp.body)
 
   # Using proc corresponding twitter REST APIs.
   resp = twitterAPI.userTimeline()
@@ -27,13 +27,14 @@ when isMainModule:
   echo pretty parseJson(resp.body)
 
   # Upload files in a stream
-  const buffersize = 200000
-  let mediaStream = newFileStream("test.jpg", fmRead)
-  let mediaSize = "test.jpg".getFileSize
+  const buffersize = 500000
+  let mediaStream = newFileStream("test.mp4", fmRead)
+  let mediaSize = "test.mp4".getFileSize
 
   # INIT
-  resp = twitterAPI.mediaUploadInit("image/jpg", $ mediaSize)
+  resp = twitterAPI.mediaUploadInit("video/mp4", $ mediaSize)
   let initResp = parseJson(resp.body)
+  echo pretty initResp
   let mediaId = initResp["media_id_string"].getStr
 
   # APPEND
@@ -46,21 +47,36 @@ when isMainModule:
       resp = twitterAPI.mediaUploadAppend(mediaId, $ segment, buffer)
       # Response should be 204
       if resp.status != "204 No Content":
-        echo resp.status
-        echo pretty parseJson(resp.body)
-        stderr.writeLine "Error when uploading"
+        stderr.writeLine "Error when uploading, server returned: " & resp.status
         break
       segment += 1
 
-  # STATUS
-  resp = twitterAPI.mediaUploadStatus(mediaId)
-  # hopefully we don't have to poll it since we didn't upload async
-  echo pretty parseJson(resp.body)
-
   # FINALIZE
   resp = twitterAPI.mediaUploadFinalize(mediaId)
-  let final_media_id = parseJson(resp.body)["media_id_string"].getStr
+  echo pretty parseJson(resp.body)
+  let finalResp = parseJson(resp.body)
+  let finalMediaId = finalResp["media_id_string"].getStr
+
+  # These should be the same
+  assert mediaId == finalMediaId
+
+  # STATUS
+  # If the API tells use it has to process the media
+  if finalResp.hasKey("processing_info"):
+    resp = twitterAPI.mediaUploadStatus(finalMediaId)
+    var respBody = parseJson(resp.body)
+    # Loop until it reaches the end state of 'failed' or 'succeeded'
+    while respBody["processing_info"]["state"].getStr notin ["failed", "succeeded"]:
+      echo pretty parseJson(resp.body)
+      resp = twitterAPI.mediaUploadStatus(finalMediaId)
+      respBody = parseJson(resp.body)
+      # Sleep for the amount of seconds it tells you to
+      sleep(respBody["processing_info"]["check_after_secs"].getInt * 100)
+
+    if respBody["processing_info"]["state"].getStr == "failed":
+      stderr.writeLine("Processing failed, perhaps your video was in the wrong format")
+
   
   # Send a tweet with that media
-  var mediaStatus = {"status": "This is an image upload test", "media_ids": final_media_id}.newStringTable
+  var mediaStatus = {"status": "This is an media upload test", "media_ids": finalMediaId}.newStringTable
   resp = twitterAPI.statusesUpdate(mediaStatus)
