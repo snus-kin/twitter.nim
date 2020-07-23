@@ -20,16 +20,16 @@ type
     consumerKey: string
     consumerSecret: string
 
-  ConsumerToken* = ref ConsumerTokenImpl
-  ## Consumer token with a consumerKey and consumerSecret
+  ConsumerToken* = ref ConsumerTokenImpl ## \
+    ## Consumer token object with a `consumerKey` and `consumerSecret`
 
   TwitterAPIImpl = object
     consumerToken: ConsumerToken
     accessToken: string
     accessTokenSecret: string
 
-  TwitterAPI* = ref TwitterAPIImpl 
-  ## TwitterAPI token container with a consumerToken, accessToken, and accessTokenSecret
+  TwitterAPI* = ref TwitterAPIImpl ## \
+    ## TwitterAPI token object with a `consumerToken`, `accessToken`, and `accessTokenSecret`
 
 proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
   return ConsumerToken(consumerKey: consumerKey,
@@ -135,7 +135,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
 
 proc get*(twitter: TwitterAPI, endPoint: string,
           additionalParams: StringTableRef = nil, media: bool = false): Response =
-  ## Raw get function, media optional parameter enables requests to the twitter media endpoints
+  ## Raw get proc. `media` optional parameter changes request URL to
+  ## `upload.twitter.com`
   if media:
     return request(twitter, endPoint, "GET", additionalParams, requestUrl=uploadUrl)
   return request(twitter, endPoint, "GET", additionalParams)
@@ -143,7 +144,8 @@ proc get*(twitter: TwitterAPI, endPoint: string,
 
 proc post*(twitter: TwitterAPI, endPoint: string,
            additionalParams: StringTableRef = nil, media: bool = false): Response =
-  ## Raw post function, media optional parameter enables requests to the twitter media endpoints
+  ## Raw post proc. `media` optional parameter changes request URL to
+  ## `upload.twitter.com`
   if media:
     return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl)
   return request(twitter, endPoint, "POST", additionalParams)
@@ -160,37 +162,43 @@ proc post*(twitter: TwitterAPI, endPoint: string,
 
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
+  ## `statuses/update.json` endpoint
   return post(twitter, "statuses/update.json", additionalParams)
 
 
 proc userTimeline*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
+  ## `statuses/user_timeline.json` endpoint
   return get(twitter, "statuses/user_timeline.json", additionalParams)
 
 
 proc homeTimeline*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
+  ## `statuses/home_timeline.json` endpoint
   return get(twitter, "statuses/home_timeline.json", additionalParams)
 
 
 proc mentionsTimeline*(twitter: TwitterAPI,
                        additionalParams: StringTableRef = nil): Response =
+  ## `statuses/mentions_timeline.json` endpoint
   return get(twitter, "statuses/mentions_timeline.json", additionalParams)
 
 
 proc retweetsOfMe*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
+  ## `statuses/retweets_of_me.json` endpoint
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
 proc user*(twitter: TwitterAPI,
            additionalParams: StringTableRef = nil): Response =
+  ## `account/verify_credentials.json` endpoint
   return get(twitter, "account/verify_credentials.json", additionalParams)
 
 
 proc user*(twitter: TwitterAPI, screenName: string,
            additionalParams: StringTableRef = nil): Response =
-  ## users/show.json endpoint for screen names (@username)
+  ## `users/show.json` endpoint for screen names (@username)
   if additionalParams != nil:
     additionalParams["screen_name"] = screenName
     return get(twitter, "users/show.json", additionalParams)
@@ -200,7 +208,7 @@ proc user*(twitter: TwitterAPI, screenName: string,
 
 proc user*(twitter: TwitterAPI, userId: int32,
            additionalParams: StringTableRef = nil): Response =
-  ## users/show.json endpoint for user id (e.g. 783214 =is=> @twitter)
+  ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
     return get(twitter, "users/show.json", additionalParams)
@@ -210,7 +218,9 @@ proc user*(twitter: TwitterAPI, userId: int32,
 
 proc uploadFile*(twitter: TwitterAPI, filename: string,
                  mediaType: string, additionalParams: StringTableRef = nil): Response =
-  ## Upload a file from a filename, mediaType takes these arguments: `[amplify_video, tweet_gif, tweet_image, tweet_video]`
+  ## Upload a file from a filename 
+  ##
+  ## mediaType takes these arguments: `amplify_video, tweet_gif, tweet_image, tweet_video`
   # This is a bit 'higher level' than the rest but IMO is routine enough and simple enough to make it useful
   var ubody = additionalParams
   ubody["media_type"] = mediaType
@@ -223,9 +233,11 @@ proc mediaUploadInit*(twitter: TwitterAPI,
                       additionalParams: StringTableRef = nil): Response =
   ## INIT command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init
-  ## mediaType should be the MIME type for the data you are sending, 
-  ## The response returned from this will contain a media_id field that you need to provide to the other mediaUpload procs
-  # These need to be multipart form data 
+  ##
+  ## `mediaType` should be the MIME type for the data you are sending.
+  ##
+  ## The response returned from this will contain a media_id field that you
+  ## need to provide to the other `mediaUpload` procs
   var ubody = newStringTable()
   if additionalParams != nil:
     ubody = additionalParams
@@ -239,7 +251,8 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
                         data: string, additionalParams: StringTableRef = nil): Response =
   ## APPEND command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
-  # These need to be multipart form data 
+  ##
+  ## Appends a chunk of data to a media upload, can accept base64 or binary
   var ubody = newStringTable()
   if additionalParams != nil:
     ubody = additionalParams
@@ -251,7 +264,12 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
 
 proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
-  ## STATUS command for media upload see: https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
+  ## STATUS command for media upload see:
+  ## https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
+  ##
+  ## Used to check the processing status of an upload. This should only be run
+  ## when mediaUploadFinalize_ returns a `processing_info` field otherwise a
+  ## 404 will be generated
   var ubody = newStringTable()
   if additionalParams != nil:
     ubody = additionalParams
@@ -264,6 +282,10 @@ proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
   ## FINALIZE command for media upload 
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize
+  ##
+  ## Used to tell twitter your upload is finished. Will return a response
+  ## with a `processing_info` field if further processing needs to be done use
+  ## mediaUploadStatus_ to poll until completion.
   var ubody = newStringTable()
   if additionalParams != nil:
     ubody = additionalParams
@@ -274,6 +296,12 @@ proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
                   additionalParams: StringTableRef = nil): untyped =
+  ## Template to callAPI
+  ##
+  ## Example:
+  ## ```nim 
+  ## var testStatus = {"status": "test"}.newStringTable
+  ## var resp = twitterAPI.callAPI(statusesUpdate, testStatus)```
   api(twitter, additionalParams)
 
 
