@@ -3,6 +3,10 @@
 Low-level twitter API wrapper library for Nim.
 
 ## Installation
+From Nimble:
+```console
+$ nimble install twitter
+```
 
 From Github:
 
