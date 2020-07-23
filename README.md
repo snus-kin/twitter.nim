@@ -1,6 +1,8 @@
 # twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master)
 
-Low-level twitter API wrapper library for Nim.
+Low-level twitter API wrapper library for Nim. 
+
+[Documentation](https://snus-kin.github.io/twitter.nim/twitter.html)
 
 ## Installation
 From Nimble:
