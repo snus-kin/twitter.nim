@@ -133,6 +133,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     return httpclient.post(client, url & "?" & path)
   elif httpMethod == "DELETE":
     return httpclient.delete(client, url & "?" & path)
+  elif httpMethod == "PUT":
+    return httpclient.put(client, url & "?" & path)
 
 
 proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
@@ -195,6 +197,12 @@ proc post*(twitter: TwitterAPI, endPoint: string,
 proc delete*(twitter: TwitterAPI, endPoint: string, 
              additionalParams: StringTableRef = nil): Response = 
   return request(twitter, endPoint, "DELETE", additionalParams)
+
+
+proc put*(twitter: TwitterAPI, endPoint: string, 
+             additionalParams: StringTableRef = nil): Response = 
+  return request(twitter, endPoint, "PUT", additionalParams)
+
 
 # --------------
 # authentication
@@ -326,6 +334,72 @@ proc statusesRetweetsOfMe*(twitter: TwitterAPI,
 # ---------------
 # TODO
 
+
+proc directMessagesWelcomeMessagesDestroy*(twitter: TwitterAPI, id: int,
+                                           additionalParams: StringTableRef = nil): Response = 
+  ## `direct_messages/welcome_messages/destroy.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return delete(twitter, "direct_messages/welcome_messages/destroy.json", additionalParams)
+  else:
+    return delete(twitter, "direct_messages/welcome_messages/destroy.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesWelcomeMessagesRulesDestroy*(twitter: TwitterAPI, id: int,
+                                           additionalParams: StringTableRef = nil): Response = 
+  ## `direct_messages/welcome_messages/rules/destroy.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return delete(twitter, "direct_messages/rules/welcome_messages/destroy.json", additionalParams)
+  else:
+    return delete(twitter, "direct_messages/rules/welcome_messages/destroy.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesWelcomeMessagesUpdate*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/welcome_messages/update.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return put(twitter, "direct_messages/welcome_messages/update.json", additionalParams)
+  else:
+    return put(twitter, "direct_messages/welcome_messages/update.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesWelcomeMessagesList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/welcome_messages/list.json` endpoint
+  return get(twitter, "direct_messages/welcome_messages/list.json", additionalParams)
+
+
+proc directMessagesWelcomeMessagesRulesList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/welcome_messages/rules/list.json` endpoint
+  return get(twitter, "direct_messages/welcome_messages/rules/list.json", additionalParams)
+
+
+proc directMessagesWelcomeMessagesRulesShow*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/welcome_messages/rules/show.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $ id
+    return get(twitter, "direct_messages/welcome_messages/rules/show.json", additionalParams)
+  else:
+    return get(twitter, "direct_messages/welcome_messages/rules/show.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesWelcomeMessagesShow*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/welcome_messages/show.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $ id
+    return get(twitter, "direct_messages/welcome_messages/show.json", additionalParams)
+  else:
+    return get(twitter, "direct_messages/welcome_messages/show.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesWelcomeMessagesNew*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `direct_messages/welcome_messages/new.json` endpoint
+  return post(twitter, "direct_messages/welcome_messages/new.json", jsonBody)
+
+
+proc directMessagesWelcomeMessagesRulesNew*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `direct_messages/welcome_messages/rules/new.json` endpoint
+  return post(twitter, "direct_messages/welcome_messages/rules/new.json", jsonBody)
 
 # -----
 # media
