@@ -326,7 +326,30 @@ proc statusesRetweetsOfMe*(twitter: TwitterAPI,
 # ---------------
 # custom_profiles
 # ---------------
-# TODO
+
+
+proc customProfilesDestroy*(twitter:TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `custom_profiles/destroy.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return delete(twitter, "custom_profiles/destroy.json", additionalParams)
+  else:
+    return delete(twitter, "custom_profiles/destroy.json", {"id": $id}.newStringTable)
+
+
+proc customProfilesId*(twitter:TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response = 
+  ## `custom_profiles/:id.json` endpoint
+  return get(twitter, "custom_profiles/" & $id & ".json", additionalParams)
+
+
+proc customProfilesLists*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `custom_profiles/list.json` endpoint
+  return get(twitter, "custom_profiles/list.json", additionalParams)
+
+
+proc customProfilesNew*(twitter:TwitterAPI, jsonBody: JsonNode): Response =
+  ## `custom_profiles/new.json` endpoint
+  return post(twitter, "custom_profiles/new.json", jsonBody)
 
 
 # ---------------
