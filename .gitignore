@@ -2,6 +2,7 @@
 src/twitter
 examples/example
 examples/credential.json
+docs/*
 nimcache/
 *.swp
 twitter
