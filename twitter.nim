@@ -184,12 +184,90 @@ proc post*(twitter: TwitterAPI, endPoint: string,
     return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
   return request(twitter, endPoint, "POST", additionalParams)
 
+
 proc post*(twitter: TwitterAPI, endPoint: string,
            jsonBody: JsonNode, media: bool = false): Response =
   if media:
     return request(twitter, endPoint, jsonBody, requestUrl=uploadUrl)
   return request(twitter, endPoint, jsonBody)
 
+
+# --------------
+# authentication
+# --------------
+# TODO
+
+
+# -----
+# lists
+# -----
+# TODO
+
+
+# ---------------------------------
+# followers / friends / friendships
+# ---------------------------------
+# TODO
+
+
+# -----
+# users
+# -----
+# TODO
+
+
+proc usersShow*(twitter: TwitterAPI, screenName: string,
+           additionalParams: StringTableRef = nil): Response =
+  ## `users/show.json` endpoint for screen names (@username)
+  if additionalParams != nil:
+    additionalParams["screen_name"] = screenName
+    return get(twitter, "users/show.json", additionalParams)
+  else:
+    return get(twitter, "users/show.json", {"screen_name": screenName}.newStringTable)
+
+
+proc usersShow*(twitter: TwitterAPI, userId: int32,
+           additionalParams: StringTableRef = nil): Response =
+  ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return get(twitter, "users/show.json", additionalParams)
+  else:
+    return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+
+
+# -------
+# account
+# -------
+# TODO
+
+proc accountVerifyCredentials*(twitter: TwitterAPI,
+           additionalParams: StringTableRef = nil): Response =
+  ## `account/verify_credentials.json` endpoint
+  return get(twitter, "account/verify_credentials.json", additionalParams)
+
+# --------------
+# saved_searches
+# --------------
+#TODO
+
+
+# --------------
+# blocks / mutes
+# --------------
+#TODO
+
+
+# -----------
+# collections
+# -----------
+# TODO
+
+
+# --------
+# statuses
+# --------
+# TODO
 
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
@@ -221,31 +299,33 @@ proc statusesRetweetsOfMe*(twitter: TwitterAPI,
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
-proc accountVerifyCredentials*(twitter: TwitterAPI,
-           additionalParams: StringTableRef = nil): Response =
-  ## `account/verify_credentials.json` endpoint
-  return get(twitter, "account/verify_credentials.json", additionalParams)
+# ---------
+# favorites
+# ---------
+# TODO
 
 
-proc usersShow*(twitter: TwitterAPI, screenName: string,
-           additionalParams: StringTableRef = nil): Response =
-  ## `users/show.json` endpoint for screen names (@username)
-  if additionalParams != nil:
-    additionalParams["screen_name"] = screenName
-    return get(twitter, "users/show.json", additionalParams)
-  else:
-    return get(twitter, "users/show.json", {"screen_name": screenName}.newStringTable)
+# ----------
+# compliance
+# ----------
+# TODO
 
 
-proc usersShow*(twitter: TwitterAPI, userId: int32,
-           additionalParams: StringTableRef = nil): Response =
-  ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
-  if additionalParams != nil:
-    additionalParams["user_id"] = $userId
-    return get(twitter, "users/show.json", additionalParams)
-  else:
-    return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+# ---------------
+# custom_profiles
+# ---------------
+# TODO
 
+
+# ---------------
+# direct_messages
+# ---------------
+# TODO
+
+
+# -----
+# media
+# -----
 
 proc mediaUploadInit*(twitter: TwitterAPI, 
                       mediaType: string, totalBytes: string, 
@@ -337,6 +417,29 @@ proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
   return post(twitter, "media/subtitles/delete.json", jsonBody, media=true)
 
+
+# ------
+# trends
+# ------
+# TODO
+
+
+# ---
+# geo
+# ---
+# TODO
+
+
+# --------
+# insights
+# --------
+# TODO
+
+
+# -------
+# utility
+# -------
+# General-use functions that might be useful without being too compicated
 
 proc uploadFile*(twitter: TwitterAPI, filename: string,
                  mediaType: string, additionalParams: StringTableRef = nil): Response =
