@@ -12,7 +12,7 @@ import json
 
 const baseUrl = "https://api.twitter.com/1.1/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
-const clientUserAgent = "twitter.nim/0.3.0"
+const clientUserAgent = "twitter.nim/1.0.0"
 
 
 type
@@ -190,43 +190,44 @@ proc post*(twitter: TwitterAPI, endPoint: string,
     return request(twitter, endPoint, jsonBody, requestUrl=uploadUrl)
   return request(twitter, endPoint, jsonBody)
 
+
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
   ## `statuses/update.json` endpoint
   return post(twitter, "statuses/update.json", additionalParams)
 
 
-proc userTimeline*(twitter: TwitterAPI,
+proc statusesUserTimeline*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
   ## `statuses/user_timeline.json` endpoint
   return get(twitter, "statuses/user_timeline.json", additionalParams)
 
 
-proc homeTimeline*(twitter: TwitterAPI,
+proc statusesHomeTimeline*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
   ## `statuses/home_timeline.json` endpoint
   return get(twitter, "statuses/home_timeline.json", additionalParams)
 
 
-proc mentionsTimeline*(twitter: TwitterAPI,
+proc statusesMentionsTimeline*(twitter: TwitterAPI,
                        additionalParams: StringTableRef = nil): Response =
   ## `statuses/mentions_timeline.json` endpoint
   return get(twitter, "statuses/mentions_timeline.json", additionalParams)
 
 
-proc retweetsOfMe*(twitter: TwitterAPI,
+proc statusesRetweetsOfMe*(twitter: TwitterAPI,
                    additionalParams: StringTableRef = nil): Response =
   ## `statuses/retweets_of_me.json` endpoint
   return get(twitter, "statuses/retweets_of_me.json", additionalParams)
 
 
-proc user*(twitter: TwitterAPI,
+proc accountVerifyCredentials*(twitter: TwitterAPI,
            additionalParams: StringTableRef = nil): Response =
   ## `account/verify_credentials.json` endpoint
   return get(twitter, "account/verify_credentials.json", additionalParams)
 
 
-proc user*(twitter: TwitterAPI, screenName: string,
+proc usersShow*(twitter: TwitterAPI, screenName: string,
            additionalParams: StringTableRef = nil): Response =
   ## `users/show.json` endpoint for screen names (@username)
   if additionalParams != nil:
@@ -236,7 +237,7 @@ proc user*(twitter: TwitterAPI, screenName: string,
     return get(twitter, "users/show.json", {"screen_name": screenName}.newStringTable)
 
 
-proc user*(twitter: TwitterAPI, userId: int32,
+proc usersShow*(twitter: TwitterAPI, userId: int32,
            additionalParams: StringTableRef = nil): Response =
   ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
   if additionalParams != nil:
@@ -245,17 +246,6 @@ proc user*(twitter: TwitterAPI, userId: int32,
   else:
     return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
 
-
-proc uploadFile*(twitter: TwitterAPI, filename: string,
-                 mediaType: string, additionalParams: StringTableRef = nil): Response =
-  ## Upload a file from a filename 
-  ##
-  ## mediaType takes these arguments: `amplify_video, tweet_gif, tweet_image, tweet_video`
-  # This is a bit 'higher level' than the rest but IMO is routine enough and simple enough to make it useful
-  var ubody = additionalParams
-  ubody["media_type"] = mediaType
-  let data = $ readFile(filename)
-  return post(twitter, "media/upload.json", ubody, true, data)
 
 proc mediaUploadInit*(twitter: TwitterAPI, 
                       mediaType: string, totalBytes: string, 
@@ -346,6 +336,18 @@ proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ##
   ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
   return post(twitter, "media/subtitles/delete.json", jsonBody, media=true)
+
+
+proc uploadFile*(twitter: TwitterAPI, filename: string,
+                 mediaType: string, additionalParams: StringTableRef = nil): Response =
+  ## Upload a file from a filename 
+  ##
+  ## mediaType takes these arguments: `amplify_video, tweet_gif, tweet_image, tweet_video`
+  # This is a bit 'higher level' than the rest but IMO is routine enough and simple enough to make it useful
+  var ubody = additionalParams
+  ubody["media_type"] = mediaType
+  let data = $ readFile(filename)
+  return post(twitter, "media/upload.json", ubody, true, data)
 
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
