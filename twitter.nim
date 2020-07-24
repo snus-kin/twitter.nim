@@ -141,7 +141,6 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
 
-  # TODO HOW TO AUTH WITH JSON BODY
   var params = buildParams(twitter.consumerToken.consumerKey,
                            twitter.accessToken)
   params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
