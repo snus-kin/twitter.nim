@@ -231,6 +231,23 @@ proc put*(twitter: TwitterAPI, endPoint: string,
 # -----
 # TODO
 
+proc usersProfileBanner*(twitter:TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  ## `users/profile_banner.json` endpoint
+  if additionalParams != nil:
+    additionalParams["screen_name"] = screenName
+    return get(twitter, "users/profile_banner.json", additionalParams)
+  else:
+    return get(twitter, "users/profile_banner.json", {"screen_name": screenName}.newStringTable)
+
+
+proc usersProfileBanner*(twitter:TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  ## `users/profile_banner.json` endpoint
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return get(twitter, "users/profile_banner.json", additionalParams)
+  else:
+    return get(twitter, "users/profile_banner.json", {"user_id": $userId}.newStringTable)
+
 
 proc usersShow*(twitter: TwitterAPI, screenName: string,
            additionalParams: StringTableRef = nil): Response =
@@ -275,16 +292,55 @@ proc usersReportSpam*(twitter: TwitterAPI, userId: int, additionalParams: String
 # -------
 # TODO
 
+
+proc accountSettings*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `account/settings.json` endpoint
+  return get(twitter, "account/settings.json", additionalParams)
+
+
 proc accountVerifyCredentials*(twitter: TwitterAPI,
            additionalParams: StringTableRef = nil): Response =
   ## `account/verify_credentials.json` endpoint
   return get(twitter, "account/verify_credentials.json", additionalParams)
 
 
+proc accountRemoveProfileBanner*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `account/remove_profile_banner.json` endpoint
+  return post(twitter, "account/remove_profile_banner.json", additionalParams)
+
+
+proc accountUpdateSettings*(twitter:TwitterAPI, additionalParams: StringTableRef): Response =
+  ## `account/update_settings.json` endpoint
+  return post(twitter, "account/update_settings.json", additionalParams)
+
+
+proc accountUpdateProfile*(twitter:TwitterAPI, additionalParams: StringTableRef): Response =
+  ## `account/update_profile.json` endpoint
+  return post(twitter, "account/update_profile.json", additionalParams)
+
+
+proc accountUpdateProfileBanner*(twitter: TwitterAPI, banner: string, additionalParams: StringTableRef = nil): Response =
+  ## `account/update_profile_banner.json` endpoint
+  if additionalParams != nil:
+    additionalParams["banner"] = banner
+    return post(twitter, "account/update_profile_banner.json", additionalParams)
+  else:
+    return post(twitter, "account/update_profile_banner.json", {"banner": banner}.newStringTable)
+
+
+proc accountUpdateProfileImage*(twitter: TwitterAPI, image: string, additionalParams: StringTableRef = nil): Response =
+  ## `account/update_profile_image.json` endpoint
+  if additionalParams != nil:
+    additionalParams["image"] = image
+    return post(twitter, "account/update_profile_image.json", additionalParams)
+  else:
+    return post(twitter, "account/update_profile_image.json", {"image": image}.newStringTable)
+
+
 # --------------
 # saved_searches
 # --------------
-#TODO
+
 
 proc savedSeachesList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
   ## `saved_searches/list.json` endpoint
@@ -308,6 +364,7 @@ proc savedSearchesCreate*(twitter: TwitterAPI, query: string, additionalParams: 
 proc savedSeachesDestroy*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
   ## `saved_searches/destroy/:id.json` endpoint
   return post(twitter, "saved_searches/destroy/" & $id & ".json", additionalParams)
+
 
 # --------------
 # blocks / mutes
