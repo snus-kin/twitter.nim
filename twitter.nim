@@ -228,7 +228,6 @@ proc uploadFile*(twitter: TwitterAPI, filename: string,
   let data = $ readFile(filename)
   return post(twitter, "media/upload.json", ubody, true, data)
 
-
 proc mediaUploadInit*(twitter: TwitterAPI, 
                       mediaType: string, totalBytes: string, 
                       additionalParams: StringTableRef = nil): Response =
@@ -239,13 +238,13 @@ proc mediaUploadInit*(twitter: TwitterAPI,
   ##
   ## The response returned from this will contain a media_id field that you
   ## need to provide to the other `mediaUpload` procs
-  var ubody = newStringTable()
   if additionalParams != nil:
-    ubody = additionalParams
-  ubody["command"] = "INIT"
-  ubody["media_type"] = mediaType
-  ubody["total_bytes"] = totalBytes
-  return post(twitter, "media/upload.json", ubody, true)
+    additionalParams["command"] = "INIT"
+    additionalParams["media_type"] = mediaType
+    additionalParams["total_bytes"] = totalBytes
+    return post(twitter, "media/upload.json", additionalParams, true)
+  else:
+    return post(twitter, "media/upload.json", {"command":"INIT", "media_type":mediaType, "total_bytes":totalBytes}.newStringTable, true)
 
 
 proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
@@ -254,13 +253,13 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
   ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
   ##
   ## Appends a chunk of data to a media upload, can accept base64 or binary
-  var ubody = newStringTable()
   if additionalParams != nil:
-    ubody = additionalParams
-  ubody["command"] = "APPEND"
-  ubody["media_id"] = mediaId
-  ubody["segment_index"] = segmentId
-  return post(twitter, "media/upload.json", ubody, true, data)
+    additionalParams["command"] = "APPEND"
+    additionalParams["media_id"] = mediaId
+    additionalParams["segment_index"] = segmentId
+    return post(twitter, "media/upload.json", additionalParams, true, data)
+  else:
+    return post(twitter, "media/upload.json", {"command":"APPEND", "media_id":mediaId, "segment_id":segmentId}.newStringTable, true, data)
 
 
 proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
@@ -271,12 +270,12 @@ proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
   ## Used to check the processing status of an upload. This should only be run
   ## when mediaUploadFinalize_ returns a `processing_info` field otherwise a
   ## 404 will be generated
-  var ubody = newStringTable()
   if additionalParams != nil:
-    ubody = additionalParams
-  ubody["command"] = "STATUS"
-  ubody["media_id"] = mediaId
-  return get(twitter, "media/upload.json", ubody, true)
+    additionalParams["command"] = "STATUS"
+    additionalParams["media_id"] = mediaId
+    return get(twitter, "media/upload.json", additionalParams, true)
+  else:
+    return get(twitter, "media/upload.json", {"command":"STATUS", "media_id":mediaId}.newStringTable, true)
 
 
 proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
@@ -287,12 +286,12 @@ proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
   ## Used to tell twitter your upload is finished. Will return a response
   ## with a `processing_info` field if further processing needs to be done use
   ## mediaUploadStatus_ to poll until completion.
-  var ubody = newStringTable()
   if additionalParams != nil:
-    ubody = additionalParams
-  ubody["command"] = "FINALIZE"
-  ubody["media_id"] = mediaId
-  return post(twitter, "media/upload.json", ubody, true)
+    additionalParams["command"] = "FINALIZE"
+    additionalParams["media_id"] = mediaId
+    return post(twitter, "media/upload.json", additionalParams, true)
+  else:
+    return post(twitter, "media/upload.json", {"command":"FINALIZE", "media_id":mediaId}.newStringTable, true)
 
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
