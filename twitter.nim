@@ -421,7 +421,31 @@ proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
 # ------
 # trends
 # ------
-# TODO
+
+
+proc trendsAvailable*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response = 
+  ## `trends/available.json` endpoint
+  return get(twitter, "trends/available.json", additionalParams)
+
+
+proc trendsClosest*(twitter:TwitterAPI, lat: float, lon: float, additionalParams: StringTableRef = nil): Response = 
+  ## `trends/closest.json` endpoint
+  if additionalParams != nil:
+    additionalParams["lat"] = $ lat
+    additionalParams["lon"] = $ lon
+    return get(twitter, "trends/closest.json", additionalParams)
+  else:
+    return get(twitter, "trends/closest.json", {"lat": $lat, "lon": $lon}.newStringTable)
+
+
+proc trendsPlace*(twitter:TwitterAPI, id: int32, additionalParams: StringTableRef = nil): Response = 
+  ## `trends/place.json` endpoint
+  # id is explicitly int32 since it is Yahoo WOED which uses 32 bit ints
+  if additionalParams != nil:
+    additionalParams["id"] = $ id
+    return get(twitter, "trends/place.json", additionalParams)
+  else:
+    return get(twitter, "trends/place.json", {"id": $id}.newStringTable)
 
 
 # ---
