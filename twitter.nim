@@ -5,9 +5,9 @@ import sequtils
 import strtabs
 import strutils
 import times
-
 import uuids
 import hmac
+import json
 
 
 const baseUrl = "https://api.twitter.com/1.1/"
@@ -72,8 +72,7 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string, param
     keys.add(key)
 
   keys.sort(cmpIgnoreCase)
-
-  let query: string = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
+  var query: string = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let key: string = encodeUrl(consumerSecret) & "&" & encodeUrl(accessTokenSecret)
   let base: string = httpMethod & "&" & encodeUrl(url) & "&" & encodeUrl(query)
 
@@ -134,6 +133,32 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     return httpclient.post(client, url & "?" & path)
 
 
+proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
+              requestUrl: string = baseUrl): Response =
+  ## Request proc for endpoints requiring `application/json` bodies
+  # You can only send JSON with POST
+  let httpMethod = "POST"
+  let url = requestUrl & endPoint
+  var keys: seq[string] = @[]
+
+  # TODO HOW TO AUTH WITH JSON BODY
+  var params = buildParams(twitter.consumerToken.consumerKey,
+                           twitter.accessToken)
+  params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
+                                        twitter.accessTokenSecret,
+                                        httpMethod, url, params)
+
+  for key in params.keys:
+    keys.add(key)
+
+  let authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  let client = newHttpClient(userAgent = clientUserAgent)
+  client.headers = newHttpHeaders({"Authorization": authorize, "Content-Type": "application/json; charset=UTF-8"})
+
+  if httpMethod == "POST":
+    return httpclient.post(client, url, body= $jsonBody)
+
+
 proc get*(twitter: TwitterAPI, endPoint: string,
           additionalParams: StringTableRef = nil, media: bool = false): Response =
   ## Raw get proc. `media` optional parameter changes request URL to
@@ -160,6 +185,11 @@ proc post*(twitter: TwitterAPI, endPoint: string,
     return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
   return request(twitter, endPoint, "POST", additionalParams)
 
+proc post*(twitter: TwitterAPI, endPoint: string,
+           jsonBody: JsonNode, media: bool = false): Response =
+  if media:
+    return request(twitter, endPoint, jsonBody, requestUrl=uploadUrl)
+  return request(twitter, endPoint, jsonBody)
 
 proc statusesUpdate*(twitter: TwitterAPI,
                     additionalParams: StringTableRef = nil): Response =
@@ -231,8 +261,9 @@ proc uploadFile*(twitter: TwitterAPI, filename: string,
 proc mediaUploadInit*(twitter: TwitterAPI, 
                       mediaType: string, totalBytes: string, 
                       additionalParams: StringTableRef = nil): Response =
-  ## `INIT` command for media upload 
-  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init
+  ## `INIT` command for `media/upload.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init
   ##
   ## `mediaType` should be the MIME type for the data you are sending.
   ##
@@ -249,8 +280,9 @@ proc mediaUploadInit*(twitter: TwitterAPI,
 
 proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
                         data: string, additionalParams: StringTableRef = nil): Response =
-  ## `APPEND` command for media upload 
-  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
+  ## `APPEND` command for `media/upload.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append
   ##
   ## Appends a chunk of data to a media upload, can accept base64 or binary
   if additionalParams != nil:
@@ -259,13 +291,14 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
     additionalParams["segment_index"] = segmentId
     return post(twitter, "media/upload.json", additionalParams, true, data)
   else:
-    return post(twitter, "media/upload.json", {"command":"APPEND", "media_id":mediaId, "segment_id":segmentId}.newStringTable, true, data)
+    return post(twitter, "media/upload.json", {"command":"APPEND", "media_id":mediaId, "segment_index":segmentId}.newStringTable, true, data)
 
 
 proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
-  ## `STATUS` command for media upload see:
-  ## https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
+  ## `STATUS` command for `media/upload.json` endpoint 
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status
   ##
   ## Used to check the processing status of an upload. This should only be run
   ## when mediaUploadFinalize_ returns a `processing_info` field otherwise a
@@ -280,8 +313,9 @@ proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
 
 proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
            additionalParams: StringTableRef = nil): Response=
-  ## `FINALIZE` command for media upload 
-  ## See: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize
+  ## `FINALIZE` command for `media/upload.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize
   ##
   ## Used to tell twitter your upload is finished. Will return a response
   ## with a `processing_info` field if further processing needs to be done use
@@ -292,6 +326,13 @@ proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
     return post(twitter, "media/upload.json", additionalParams, true)
   else:
     return post(twitter, "media/upload.json", {"command":"FINALIZE", "media_id":mediaId}.newStringTable, true)
+
+
+proc mediaMetadataCreate*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `media/metadata/create.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-metadata-create
+  return post(twitter, "media/metadata/create.json", jsonBody, media=true)
 
 
 template callAPI*(twitter: TwitterAPI, api: untyped,
