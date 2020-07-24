@@ -120,6 +120,9 @@ function main() {
     title="request(twitter: TwitterAPI; endPoint, httpMethod: string;
         additionalParams: StringTableRef = nil; requestUrl: string = baseUrl;
         data: string = &quot;&quot;): Response"><wbr />request<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#request%2CTwitterAPI%2Cstring%2CJsonNode%2Cstring"
+    title="request(twitter: TwitterAPI; endPoint: string; jsonBody: JsonNode = nil;
+        requestUrl: string = baseUrl): Response"><wbr />request<span class="attachedType">TwitterAPI</span></a></li>
   <li><a class="reference" href="#get%2CTwitterAPI%2Cstring%2CStringTableRef%2Cbool"
     title="get(twitter: TwitterAPI; endPoint: string; additionalParams: StringTableRef = nil;
     media: bool = false): Response"><wbr />get<span class="attachedType">TwitterAPI</span></a></li>
@@ -129,6 +132,8 @@ function main() {
   <li><a class="reference" href="#post%2CTwitterAPI%2Cstring%2CStringTableRef%2Cbool%2Cstring"
     title="post(twitter: TwitterAPI; endPoint: string; additionalParams: StringTableRef = nil;
      media: bool = false; data: string): Response"><wbr />post<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#post%2CTwitterAPI%2Cstring%2CJsonNode%2Cbool"
+    title="post(twitter: TwitterAPI; endPoint: string; jsonBody: JsonNode; media: bool = false): Response"><wbr />post<span class="attachedType">TwitterAPI</span></a></li>
   <li><a class="reference" href="#statusesUpdate%2CTwitterAPI%2CStringTableRef"
     title="statusesUpdate(twitter: TwitterAPI; additionalParams: StringTableRef = nil): Response"><wbr />statuses<wbr />Update<span class="attachedType">TwitterAPI</span></a></li>
   <li><a class="reference" href="#userTimeline%2CTwitterAPI%2CStringTableRef"
@@ -160,6 +165,12 @@ function main() {
   <li><a class="reference" href="#mediaUploadFinalize%2CTwitterAPI%2Cstring%2CStringTableRef"
     title="mediaUploadFinalize(twitter: TwitterAPI; mediaId: string;
                     additionalParams: StringTableRef = nil): Response"><wbr />media<wbr />Upload<wbr />Finalize<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaMetadataCreate%2CTwitterAPI%2CJsonNode"
+    title="mediaMetadataCreate(twitter: TwitterAPI; jsonBody: JsonNode): Response"><wbr />media<wbr />Metadata<wbr />Create<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaSubtitlesCreate%2CTwitterAPI%2CJsonNode"
+    title="mediaSubtitlesCreate(twitter: TwitterAPI; jsonBody: JsonNode): Response"><wbr />media<wbr />Subtitles<wbr />Create<span class="attachedType">TwitterAPI</span></a></li>
+  <li><a class="reference" href="#mediaSubtitlesDelete%2CTwitterAPI%2CJsonNode"
+    title="mediaSubtitlesDelete(twitter: TwitterAPI; jsonBody: JsonNode): Response"><wbr />media<wbr />Subtitles<wbr />Delete<span class="attachedType">TwitterAPI</span></a></li>
 
   </ul>
 </li>
@@ -239,6 +250,16 @@ TwitterAPI token object with a <tt class="docutils literal"><span class="pre">co
 
 
 </dd>
+<a id="request,TwitterAPI,string,JsonNode,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#request%2CTwitterAPI%2Cstring%2CJsonNode%2Cstring"><span class="Identifier">request</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">endPoint</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">jsonBody</span><span class="Other">:</span> <span class="Identifier">JsonNode</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">;</span>
+            <span class="Identifier">requestUrl</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">baseUrl</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span>
+    <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span>
+    <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Request proc for endpoints requiring <tt class="docutils literal"><span class="pre">application/json</span></tt> bodies
+
+</dd>
 <a id="get,TwitterAPI,string,StringTableRef,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#get%2CTwitterAPI%2Cstring%2CStringTableRef%2Cbool"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">endPoint</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
         <span class="Identifier">additionalParams</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span class="Other">=</span> <span class="Keyword">nil</span><span class="Other">;</span> <span class="Identifier">media</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
@@ -270,6 +291,16 @@ Raw post proc. <tt class="docutils literal"><span class="pre">media</span></tt> 
 <dd>
 
 Overload for post that includes binary data e.g. images / video to upload
+
+</dd>
+<a id="post,TwitterAPI,string,JsonNode,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#post%2CTwitterAPI%2Cstring%2CJsonNode%2Cbool"><span class="Identifier">post</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">endPoint</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">jsonBody</span><span class="Other">:</span> <span class="Identifier">JsonNode</span><span class="Other">;</span>
+         <span class="Identifier">media</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span>
+    <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span>
+    <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
 
 </dd>
 <a id="statusesUpdate,TwitterAPI,StringTableRef"></a>
@@ -372,7 +403,8 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p><tt class="docutils literal"><span class="pre">INIT</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init</a></p>
+<p><tt class="docutils literal"><span class="pre">INIT</span></tt> command for <tt class="docutils literal"><span class="pre">media/upload.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-init</a></p>
 <p><tt class="docutils literal"><span class="pre">mediaType</span></tt> should be the MIME type for the data you are sending.</p>
 <p>The response returned from this will contain a media_id field that you need to provide to the other <tt class="docutils literal"><span class="pre">mediaUpload</span></tt> procs</p>
 
@@ -386,7 +418,8 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p><tt class="docutils literal"><span class="pre">APPEND</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append</a></p>
+<p><tt class="docutils literal"><span class="pre">APPEND</span></tt> command for <tt class="docutils literal"><span class="pre">media/upload.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-append</a></p>
 <p>Appends a chunk of data to a media upload, can accept base64 or binary</p>
 
 
@@ -399,7 +432,8 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p><tt class="docutils literal"><span class="pre">STATUS</span></tt> command for media upload see: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status">https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status</a></p>
+<p><tt class="docutils literal"><span class="pre">STATUS</span></tt> command for <tt class="docutils literal"><span class="pre">media/upload.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status">https://developer.twitter.com/en/docs/media/upload-media/api-reference/get-media-upload-status</a></p>
 <p>Used to check the processing status of an upload. This should only be run when <a class="reference external" href="#mediauploadfinalize">mediaUploadFinalize</a> returns a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field otherwise a 404 will be generated</p>
 
 
@@ -412,8 +446,45 @@ Overload for post that includes binary data e.g. images / video to upload
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-<p><tt class="docutils literal"><span class="pre">FINALIZE</span></tt> command for media upload See: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize</a></p>
+<p><tt class="docutils literal"><span class="pre">FINALIZE</span></tt> command for <tt class="docutils literal"><span class="pre">media/upload.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-upload-finalize</a></p>
 <p>Used to tell twitter your upload is finished. Will return a response with a <tt class="docutils literal"><span class="pre">processing_info</span></tt> field if further processing needs to be done use <a class="reference external" href="#mediauploadstatus">mediaUploadStatus</a> to poll until completion.</p>
+
+
+</dd>
+<a id="mediaMetadataCreate,TwitterAPI,JsonNode"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaMetadataCreate%2CTwitterAPI%2CJsonNode"><span class="Identifier">mediaMetadataCreate</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">jsonBody</span><span class="Other">:</span> <span class="Identifier">JsonNode</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p><tt class="docutils literal"><span class="pre">media/metadata/create.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-metadata-create">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-metadata-create</a></p>
+
+
+</dd>
+<a id="mediaSubtitlesCreate,TwitterAPI,JsonNode"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaSubtitlesCreate%2CTwitterAPI%2CJsonNode"><span class="Identifier">mediaSubtitlesCreate</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">jsonBody</span><span class="Other">:</span> <span class="Identifier">JsonNode</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p><tt class="docutils literal"><span class="pre">media/subtitles/create.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create</a></p>
+
+
+</dd>
+<a id="mediaSubtitlesDelete,TwitterAPI,JsonNode"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#mediaSubtitlesDelete%2CTwitterAPI%2CJsonNode"><span class="Identifier">mediaSubtitlesDelete</span></a><span class="Other">(</span><span class="Identifier">twitter</span><span class="Other">:</span> <a href="twitter.html#TwitterAPI"><span class="Identifier">TwitterAPI</span></a><span class="Other">;</span> <span class="Identifier">jsonBody</span><span class="Other">:</span> <span class="Identifier">JsonNode</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Response</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">Defect</span><span class="Other">,</span>
+    <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<p><tt class="docutils literal"><span class="pre">media/subtitles/delete.json</span></tt> endpoint</p>
+<p>Docs: <a class="reference external" href="https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create">https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create</a></p>
 
 
 </dd>
@@ -443,7 +514,7 @@ Overload for post that includes binary data e.g. images / video to upload
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-23 18:13:30 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-07-24 15:08:22 UTC</small>
       </div>
     </div>
   </div>
