@@ -427,7 +427,27 @@ proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
 # ---
 # geo
 # ---
-# TODO
+
+
+proc geoId*(twitter:TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
+  ## `geo/id/:place_id.json` endpoint
+  return get(twitter, "geo/id/" & id & ".json", additionalParams)
+
+
+proc geoReverseGeocode*(twitter:TwitterAPI, lat: float, lon: float,
+                        additionalParams: StringTableRef = nil): Response =
+  ## `geo/reverse_geocode.json` endpoint
+  if additionalParams != nil:
+    additionalParams["lat"] = $ lat
+    additionalParams["lon"] = $ lon
+    return get(twitter, "geo/reverse_geocode.json", additionalParams)
+  else:
+    return get(twitter, "geo/reverse_geocode.json", {"lat": $lat, "lon": $lon}.newStringTable)
+
+
+proc geoSearch*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `geo/search.json` endpoint
+  return get(twitter, "geo/search.json", additionalParams)
 
 
 # --------
