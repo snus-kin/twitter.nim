@@ -334,6 +334,20 @@ proc mediaMetadataCreate*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   return post(twitter, "media/metadata/create.json", jsonBody, media=true)
 
 
+proc mediaSubtitlesCreate*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `media/subtitles/create.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
+  return post(twitter, "media/subtitles/create.json", jsonBody, media=true)
+
+
+proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `media/subtitles/delete.json` endpoint
+  ##
+  ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
+  return post(twitter, "media/subtitles/delete.json", jsonBody, media=true)
+
+
 template callAPI*(twitter: TwitterAPI, api: untyped,
                   additionalParams: StringTableRef = nil): untyped =
   ## Template to callAPI
