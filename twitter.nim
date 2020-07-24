@@ -433,8 +433,22 @@ proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
 # --------
 # insights
 # --------
-# TODO
 
+
+proc insightsEngagementTotals*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `insights/enagement/totals.json` endpoint
+  return post(twitter, "insights/enagement/totals.json", jsonBody)
+
+
+proc insightsEngagementHistorical*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `insights/enagement/historical.json` endpoint
+  return post(twitter, "insights/enagement/historical.json", jsonBody)
+
+
+proc insightsEngagement28h*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `insights/enagement/28h.json` endpoint
+  return post(twitter, "insights/enagement/28h.json", jsonBody)
+  
 
 # -------
 # utility
