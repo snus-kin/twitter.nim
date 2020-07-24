@@ -12,7 +12,7 @@ import json
 
 const baseUrl = "https://api.twitter.com/1.1/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
-const clientUserAgent = "twitter.nim/0.2.5"
+const clientUserAgent = "twitter.nim/0.3.0"
 
 
 type
