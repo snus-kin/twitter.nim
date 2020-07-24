@@ -229,7 +229,34 @@ proc put*(twitter: TwitterAPI, endPoint: string,
 # -----
 # users
 # -----
-# TODO
+
+
+proc usersLookup*(twitter:TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  ## `users/lookup.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return post(twitter, "users/lookup.json", additionalParams)
+  else:
+    return post(twitter, "users/lookup.json", {"user_id": $userId}.newStringTable)
+
+
+proc usersLookup*(twitter:TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  ## `users/lookup.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["screen_name"] = screenName
+    return post(twitter, "users/lookup.json", additionalParams)
+  else:
+    return post(twitter, "users/lookup.json", {"screen_name": screenName}.newStringTable)
+
+
+proc usersSearch*(twitter:TwitterAPI, q: string, additionalParams: StringTableRef = nil): Response =
+  ## `users/search.json` endpoint
+  if additionalParams != nil:
+    additionalParams["q"] = q
+    return get(twitter, "users/search.json", additionalParams)
+  else:
+    return get(twitter, "users/search.json", {"q": q}.newStringTable)
+
 
 proc usersProfileBanner*(twitter:TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
   ## `users/profile_banner.json` endpoint
@@ -290,7 +317,6 @@ proc usersReportSpam*(twitter: TwitterAPI, userId: int, additionalParams: String
 # -------
 # account
 # -------
-# TODO
 
 
 proc accountSettings*(twitter:TwitterAPI, additionalParams: StringTableRef = nil): Response =
