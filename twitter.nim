@@ -314,13 +314,44 @@ proc statusesRetweetsOfMe*(twitter: TwitterAPI,
 # ---------
 # favorites
 # ---------
-# TODO
 
 
-# ----------
-# compliance
-# ----------
-# TODO
+proc favoritesList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response = 
+  ## `favorites/list.json` endpoint
+  return get(twitter, "favorites/list.json", additionalParams)
+
+
+proc favoritesCreate*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `favorites/create.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return post(twitter, "favorites/create.json", additionalParams)
+  else:
+    return post(twitter, "favorites/create.json", {"id": $id}.newStringTable)
+
+
+proc favoritesDestroy*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `favorites/destroy.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return post(twitter, "favorites/destroy.json", additionalParams)
+  else:
+    return post(twitter, "favorites/destroy.json", {"id": $id}.newStringTable)
+
+# ------
+# search
+# ------
+
+
+proc searchTweets*(twitter:TwitterAPI, q: string, additionalParams: StringTableRef = nil): Response = 
+  ## `search/tweets.json` endpoint
+  ##
+  ## Standard tier search endpoint
+  if additionalParams != nil:
+    additionalParams["q"] = q
+    return get(twitter, "search/tweets.json", additionalParams)
+  else:
+    return get(twitter, "search/tweets.json", {"q": q}.newStringTable)
 
 
 # ---------------
@@ -355,6 +386,8 @@ proc customProfilesNew*(twitter:TwitterAPI, jsonBody: JsonNode): Response =
 # ---------------
 # direct_messages
 # ---------------
+
+
 proc directMessagesEventsDestroy*(twitter: TwitterAPI, id: int,
                                            additionalParams: StringTableRef = nil): Response = 
   ## `direct_messages/events/destroy.json` endpoint
