@@ -131,6 +131,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     return httpclient.get(client, url & "?" & path)
   elif httpMethod == "POST":
     return httpclient.post(client, url & "?" & path)
+  elif httpMethod == "DELETE":
+    return httpclient.delete(client, url & "?" & path)
 
 
 proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
@@ -180,9 +182,7 @@ proc post*(twitter: TwitterAPI, endPoint: string,
            additionalParams: StringTableRef = nil, media: bool = false, 
            data: string): Response =
   ## Overload for post that includes binary data e.g. images / video to upload
-  if media:
-    return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
-  return request(twitter, endPoint, "POST", additionalParams)
+  return request(twitter, endPoint, "POST", additionalParams, requestUrl=uploadUrl, data)
 
 
 proc post*(twitter: TwitterAPI, endPoint: string,
@@ -191,6 +191,10 @@ proc post*(twitter: TwitterAPI, endPoint: string,
     return request(twitter, endPoint, jsonBody, requestUrl=uploadUrl)
   return request(twitter, endPoint, jsonBody)
 
+
+proc delete*(twitter: TwitterAPI, endPoint: string, 
+             additionalParams: StringTableRef = nil): Response = 
+  return request(twitter, endPoint, "DELETE", additionalParams)
 
 # --------------
 # authentication
