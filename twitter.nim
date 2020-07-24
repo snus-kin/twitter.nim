@@ -242,7 +242,7 @@ proc usersShow*(twitter: TwitterAPI, screenName: string,
     return get(twitter, "users/show.json", {"screen_name": screenName}.newStringTable)
 
 
-proc usersShow*(twitter: TwitterAPI, userId: int32,
+proc usersShow*(twitter: TwitterAPI, userId: int,
            additionalParams: StringTableRef = nil): Response =
   ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
   if additionalParams != nil:
@@ -250,6 +250,24 @@ proc usersShow*(twitter: TwitterAPI, userId: int32,
     return get(twitter, "users/show.json", additionalParams)
   else:
     return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+
+
+proc usersReportSpam*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  ## `users/report_spam.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["user_id"] = $screenName
+    return get(twitter, "users/report_spam.json", additionalParams)
+  else:
+    return get(twitter, "users/report_spam.json", {"screen_name": $screenName}.newStringTable)
+
+
+proc usersReportSpam*(twitter: TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  ## `users/report_spam.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return get(twitter, "users/report_spam.json", additionalParams)
+  else:
+    return get(twitter, "users/report_spam.json", {"user_id": $userId}.newStringTable)
 
 
 # -------
@@ -274,10 +292,101 @@ proc accountVerifyCredentials*(twitter: TwitterAPI,
 #TODO
 
 
+proc blocksIds*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `blocks/ids.json` endpoint
+  return get(twitter, "blocks/ids.json", additionalParams)
+
+
+proc blocksList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `blocks/list.json` endpoint
+  return get(twitter, "blocks/list.json", additionalParams)
+
+
+proc mutesUsersIds*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `mutes/users/ids.json` endpoint
+  return get(twitter, "mutes/users/ids.json", additionalParams)
+
+
+proc mutesUsersList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `mutes/users/list.json` endpoint
+  return get(twitter, "mutes/users/list.json", additionalParams)
+
+
+proc blocksCreate*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  # `blocks/create.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["user_id"] = $screenName
+    return post(twitter, "blocks/create.json", additionalParams)
+  else:
+    return post(twitter, "blocks/create.json", {"screen_name": $screenName}.newStringTable)
+
+
+proc blocksCreate*(twitter: TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  # `blocks/create.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return post(twitter, "blocks/create.json", additionalParams)
+  else:
+    return post(twitter, "blocks/create.json", {"user_id": $userId}.newStringTable)
+
+
+proc blocksDestroy*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  # `blocks/destroy.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["user_id"] = $screenName
+    return post(twitter, "blocks/destroy.json", additionalParams)
+  else:
+    return post(twitter, "blocks/destroy.json", {"screen_name": $screenName}.newStringTable)
+
+
+proc blocksDestroy*(twitter: TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  # `blocks/destroy.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return post(twitter, "blocks/destroy.json", additionalParams)
+  else:
+    return post(twitter, "blocks/destroy.json", {"user_id": $userId}.newStringTable)
+
+
+proc mutesUsersCreate*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  # `mutes/users/create.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["user_id"] = $screenName
+    return post(twitter, "mutes/users/create.json", additionalParams)
+  else:
+    return post(twitter, "mutes/users/create.json", {"screen_name": $screenName}.newStringTable)
+
+
+proc mutesUsersCreate*(twitter: TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  # `mutes/users/create.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return post(twitter, "mutes/users/create.json", additionalParams)
+  else:
+    return post(twitter, "mutes/users/create.json", {"user_id": $userId}.newStringTable)
+
+
+proc mutesUsersDestroy*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
+  # `mutes/users/destroy.json` endpoint for screen name
+  if additionalParams != nil:
+    additionalParams["user_id"] = $screenName
+    return post(twitter, "mutes/users/destroy.json", additionalParams)
+  else:
+    return post(twitter, "mutes/users/destroy.json", {"screen_name": $screenName}.newStringTable)
+
+
+proc mutesUsersDestroy*(twitter: TwitterAPI, userId: int, additionalParams: StringTableRef = nil): Response =
+  # `mutes/users/destroy.json` endpoint for user id
+  if additionalParams != nil:
+    additionalParams["user_id"] = $userId
+    return post(twitter, "mutes/users/destroy.json", additionalParams)
+  else:
+    return post(twitter, "mutes/users/destroy.json", {"user_id": $userId}.newStringTable)
+
+
 # -----------
 # collections
 # -----------
-# TODO
 
 
 proc collectionsEntries*(twitter:TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
@@ -487,6 +596,7 @@ proc statusesSample*(twitter: TwitterAPI, additionalParams: StringTableRef = nil
   ## `statuses/sample.json` endpoint
   return get(twitter, "statuses/sample.json", additionalParams)
 
+
 # ---------
 # favorites
 # ---------
@@ -513,6 +623,7 @@ proc favoritesDestroy*(twitter: TwitterAPI, id: int, additionalParams: StringTab
     return post(twitter, "favorites/destroy.json", additionalParams)
   else:
     return post(twitter, "favorites/destroy.json", {"id": $id}.newStringTable)
+
 
 # ------
 # search
@@ -669,6 +780,7 @@ proc directMessagesWelcomeMessagesNew*(twitter: TwitterAPI, jsonBody: JsonNode):
 proc directMessagesWelcomeMessagesRulesNew*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ## `direct_messages/welcome_messages/rules/new.json` endpoint
   return post(twitter, "direct_messages/welcome_messages/rules/new.json", jsonBody)
+
 
 # -----
 # media
