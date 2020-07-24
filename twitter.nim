@@ -282,8 +282,11 @@ proc accountVerifyCredentials*(twitter: TwitterAPI,
 # --------
 # statuses
 # --------
-# TODO
 
+
+proc statusesFilter*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `statuses/filter.json` endpoint
+  return post(twitter, "statuses/filter.json", additionalParams)
 
 
 proc statusesUserTimeline*(twitter: TwitterAPI,
