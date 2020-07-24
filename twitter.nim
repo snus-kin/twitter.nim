@@ -280,16 +280,38 @@ proc accountVerifyCredentials*(twitter: TwitterAPI,
   ## `account/verify_credentials.json` endpoint
   return get(twitter, "account/verify_credentials.json", additionalParams)
 
+
 # --------------
 # saved_searches
 # --------------
 #TODO
 
+proc savedSeachesList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `saved_searches/list.json` endpoint
+  return get(twitter, "saved_searches/list.json", additionalParams)
+
+
+proc savedSearchesShow*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `saved_searches/show/:id.json` endpoint
+  return get(twitter, "saved_searches/show/" & $id & ".json", additionalParams)
+
+
+proc savedSearchesCreate*(twitter: TwitterAPI, query: string, additionalParams: StringTableRef = nil): Response =
+  ## `saved_searches/create.json` endpoint
+  if additionalParams != nil:
+    additionalParams["query"] = query
+    return post(twitter, "saved_searches/create.json", additionalParams)
+  else:
+    return post(twitter, "saved_searches/create.json", {"query": query}.newStringTable)
+
+
+proc savedSeachesDestroy*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response =
+  ## `saved_searches/destroy/:id.json` endpoint
+  return post(twitter, "saved_searches/destroy/" & $id & ".json", additionalParams)
 
 # --------------
 # blocks / mutes
 # --------------
-#TODO
 
 
 proc blocksIds*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
