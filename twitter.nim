@@ -332,7 +332,44 @@ proc statusesRetweetsOfMe*(twitter: TwitterAPI,
 # ---------------
 # direct_messages
 # ---------------
-# TODO
+proc directMessagesEventsDestroy*(twitter: TwitterAPI, id: int,
+                                           additionalParams: StringTableRef = nil): Response = 
+  ## `direct_messages/events/destroy.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return delete(twitter, "direct_messages/events/destroy.json", additionalParams)
+  else:
+    return delete(twitter, "direct_messages/events/destroy.json", {"id": $id}.newStringTable)
+
+
+proc directMessagsEventsList*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `direct_messages/events/list.json` endpoint
+  return get(twitter, "direct_messages/events/list.json", additionalParams)
+
+
+proc directMessagesEventsShow*(twitter: TwitterAPI, id: int, additionalParams: StringTableRef = nil): Response = 
+  ## `direct_messages/events/show.json` endpoint
+  if additionalParams != nil:
+    additionalParams["id"] = $id
+    return get(twitter, "direct_messages/events/show.json", additionalParams)
+  else:
+    return get(twitter, "direct_messages/events/show.json", {"id": $id}.newStringTable)
+
+
+proc directMessagesEventsNew*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+  ## `direct_messages/events/new.json` endpoint (message_create)
+  return post(twitter, "direct_messages/events/new.json", jsonBody)
+
+
+proc directMessagesIndicateTyping*(twitter: TwitterAPI, jsonBody: JsonNode): Response = 
+  ## `direct_messages/indicate_typing.json` endpoint
+  return post(twitter, "direct_messages/indicate_typing.json", jsonBody)
+
+
+#TODO TEST THIS
+proc directMessagesMarkRead*(twitter: TwitterAPI, jsonBody: JsonNode): Response = 
+  ## `direct_messages/mark_read.json` endpoint
+  return post(twitter, "direct_messages/mark_read.json", jsonBody)
 
 
 proc directMessagesWelcomeMessagesDestroy*(twitter: TwitterAPI, id: int,
