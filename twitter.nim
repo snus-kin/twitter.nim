@@ -13,7 +13,7 @@ import json
 const baseUrl = "https://api.twitter.com/1.1/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
-const clientUserAgent = "twitter.nim/1.0.0"
+const clientUserAgent = "twitter.nim/1.0.1"
 
 
 type
@@ -206,6 +206,26 @@ proc delete*(twitter: TwitterAPI, endPoint: string,
 proc put*(twitter: TwitterAPI, endPoint: string, 
              additionalParams: StringTableRef = nil): Response = 
   return request(twitter, endPoint, "PUT", additionalParams)
+
+
+# -------------------
+# developer utilities
+# -------------------
+
+
+proc applicationRateLimitData*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `application/rate_limit_status.json` endpoint
+  return get(twitter, "application/rate_limit_status.json", additionalParams)
+
+
+proc helpConfiguration*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `help/configuration.json` endpoint
+  return get(twitter, "help/configuration.json", additionalParams)
+
+
+proc helpLanguages*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `help/languages.json` endpoint
+  return get(twitter, "help/languages.json", additionalParams)
 
 
 # --------------
