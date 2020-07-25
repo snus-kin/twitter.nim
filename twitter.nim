@@ -219,11 +219,129 @@ proc put*(twitter: TwitterAPI, endPoint: string,
 # -----
 # TODO
 
+proc listsDestroy*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/destroy.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/destroy.json", additionalParams)
+  else:
+    return post(twitter, "lists/destroy.json", {"slug": slug}.newStringTable)
+
+
+proc listsDestroy*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/destroy.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/destroy.json", additionalParams)
+  else:
+    return post(twitter, "lists/destroy.json", {"list_id": $listId}.newStringTable)
+
+
+proc listsMembersCreate*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/create.json` endpoint
+  # NB: this could be, I think 5, overloading procs but I have decided not to for simplicity
+  return post(twitter, "lists/members/create.json", additionalParams)
+
+
+proc listsMembersCreateAll*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/create_all.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/members/create_all.json", additionalParams)
+  else:
+    return post(twitter, "lists/members/create_all.json", {"list_id": $listId}.newStringTable)
+
+
+proc listsMembersCreateAll*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/create_all.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/members/create_all.json", additionalParams)
+  else:
+    return post(twitter, "lists/members/create_all.json", {"slug": slug}.newStringTable)
+
+
+proc listsMembersDestroy*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/destroy.json` endpoint
+  # NB: this could be, I think 5, overloading procs but I have decided not to for simplicity
+  return post(twitter, "lists/members/destroy.json", additionalParams)
+
+
+proc listsMembersDestroyAll*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/destroy_all.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/members/destroy_all.json", additionalParams)
+  else:
+    return post(twitter, "lists/members/destroy_all.json", {"list_id": $listId}.newStringTable)
+
+
+proc listsMembersDestroyAll*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/members/destroy_all.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/members/destroy_all.json", additionalParams)
+  else:
+    return post(twitter, "lists/members/destroy_all.json", {"slug": slug}.newStringTable)
+
+
+proc listsSubscribersCreate*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/subscribers/create.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/subscribers/create.json", additionalParams)
+  else:
+    return post(twitter, "lists/subscribers/create.json", {"slug": slug}.newStringTable)
+
+
+proc listsSubscribersCreate*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/subscribers/create.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/subscribers/create.json", additionalParams)
+  else:
+    return post(twitter, "lists/subscribers/create.json", {"list_id": $listId}.newStringTable)
+
+
+proc listsSubscribersDestroy*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/subscribers/destroy.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/subscribers/destroy.json", additionalParams)
+  else:
+    return post(twitter, "lists/subscribers/destroy.json", {"slug": slug}.newStringTable)
+
+
+proc listsSubscribersDestroy*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/subscribers/destroy.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/subscribers/destroy.json", additionalParams)
+  else:
+    return post(twitter, "lists/subscribers/destroy.json", {"list_id": $listId}.newStringTable)
+
+
+proc listsUpdate*(twitter: TwitterAPI, slug: string, additionalParams: StringTableRef = nil): Response =
+  ## `lists/update.json` endpoint for slug
+  if additionalParams != nil:
+    additionalParams["slug"] = slug
+    return post(twitter, "lists/update.json", additionalParams)
+  else:
+    return post(twitter, "lists/update.json", {"slug": slug}.newStringTable)
+
+
+proc listsUpdate*(twitter: TwitterAPI, listId: int, additionalParams: StringTableRef = nil): Response =
+  ## `lists/update.json` endpoint for list id
+  if additionalParams != nil:
+    additionalParams["list_id"] = $listId
+    return post(twitter, "lists/update.json", additionalParams)
+  else:
+    return post(twitter, "lists/update.json", {"list_id": $listId}.newStringTable)
+
 
 # ---------------------------------
 # followers / friends / friendships
 # ---------------------------------
-# TODO
 
 proc followersIds*(twitter: TwitterAPI, screenName: string, additionalParams: StringTableRef = nil): Response =
   ## `followers/ids.json` endpoint for screen name
