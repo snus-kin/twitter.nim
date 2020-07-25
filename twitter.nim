@@ -1331,10 +1331,14 @@ proc directMessagesIndicateTyping*(twitter: TwitterAPI, jsonBody: JsonNode): Res
   return post(twitter, "direct_messages/indicate_typing.json", jsonBody)
 
 
-#TODO TEST THIS
-proc directMessagesMarkRead*(twitter: TwitterAPI, jsonBody: JsonNode): Response = 
+proc directMessagesMarkRead*(twitter: TwitterAPI, lastReadEventId: int, recipientId: int, additionalParams: StringTableRef = nil): Response = 
   ## `direct_messages/mark_read.json` endpoint
-  return post(twitter, "direct_messages/mark_read.json", jsonBody)
+  if additionalParams != nil:
+    additionalParams["last_read_event_id"] = $lastReadEventId
+    additionalParams["recipient_id"] = $recipientId
+    return post(twitter, "direct_messages/mark_read.json", additionalParams)
+  else:
+    return post(twitter, "direct_messages/mark_read.json", {"last_read_event_id": $lastReadEventId, "recipient_id": $recipientId}.newStringTable)
 
 
 proc directMessagesWelcomeMessagesDestroy*(twitter: TwitterAPI, id: int,
