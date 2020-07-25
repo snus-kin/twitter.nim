@@ -208,6 +208,26 @@ proc put*(twitter: TwitterAPI, endPoint: string,
   return request(twitter, endPoint, "PUT", additionalParams)
 
 
+# -------------------
+# developer utilities
+# -------------------
+
+
+proc applicationRateLimitData*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `application/rate_limit_status.json` endpoint
+  return get(twitter, "application/rate_limit_status.json", additionalParams)
+
+
+proc helpConfiguration*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `help/configuration.json` endpoint
+  return get(twitter, "help/configuration.json", additionalParams)
+
+
+proc helpLanguages*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `help/languages.json` endpoint
+  return get(twitter, "help/languages.json", additionalParams)
+
+
 # --------------
 # authentication
 # --------------
