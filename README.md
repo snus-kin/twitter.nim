@@ -20,8 +20,12 @@ $ cd twitter.nim && nimble install
 ## Usage
 To use the library, `import twitter` and compile with `-d:ssl` 
 
-## Example
+Note: only the standard (free) endpoints are wrapped. All mentioned in the
+[API Reference Index](https://developer.twitter.com/en/docs/api-reference-index)
+have been implemented, please open an issue if you find one that isn't in this
+reference.
 
+## Example
 ```nim
 import twitter, json, strtabs
 
@@ -53,3 +57,5 @@ when isMainModule:
   resp = twitterAPI.post("media/upload.json", ubody, media=true, data=image)
   echo parseJson(resp.body)
 ```
+
+See also: `examples/` for more extensive examples on the library's use.
