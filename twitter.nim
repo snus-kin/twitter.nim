@@ -36,6 +36,7 @@ type
 
   TwitterAPIImpl = object
     consumerToken: ConsumerToken
+    bearerToken: BearerToken
     accessToken: string
     accessTokenSecret: string
 
@@ -57,6 +58,10 @@ proc newTwitterAPI*(consumerToken: ConsumerToken, accessToken, accessTokenSecret
   return TwitterAPI(consumerToken: consumerToken,
                     accessToken: accessToken,
                     accessTokenSecret: accessTokenSecret)
+
+
+proc newTwitterAPI*(bearerToken: BearerToken): TwitterAPI =
+  return TwitterAPI(bearerToken: bearerToken)
 
 
 proc newTwitterAPI*(consumerKey, consumerSecret, 
@@ -113,30 +118,52 @@ proc buildParams(consumerKey, accessToken: string,
   return params
 
 
+proc buildParams(additionalParams: StringTableRef = nil): StringTableRef =
+  var params: StringTableRef
+  if additionalParams != nil:
+    for key, value in additionalParams:
+      params[key] = encodeUrl(value)
+  return params
+
+
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
               additionalParams: StringTableRef = nil,
               requestUrl: string = baseUrl, data: string = ""): Response =
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
+  
+  var params: StringTableRef
+  var authorize = ""
+  if twitter.bearerToken != nil:
+    var params = buildParams(twitter.consumerToken.consumerKey,
+                             twitter.accessToken,
+                             additionalParams)
+    params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
+                                          twitter.accessTokenSecret,
+                                          httpMethod, url, params)
+    
+    var authorizeKeys: seq[string] = @[]
+    for key in params.keys:
+      if key.startsWith("oauth_"):
+        authorizeKeys.add(key)
+      keys.add(key)
 
-  var params = buildParams(twitter.consumerToken.consumerKey,
-                           twitter.accessToken,
-                           additionalParams)
-  params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
-                                        twitter.accessTokenSecret,
-                                        httpMethod, url, params)
+    authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  else:
+    params = buildParams(additionalParams)
 
-  for key in params.keys:
-    keys.add(key)
+    for key in params.keys:
+      keys.add(key)
 
-  let authorizeKeys = keys.filter(proc(x: string): bool = x.startsWith("oauth_"))
-  let authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+    authorize = "Bearer " & twitter.bearerToken.bearerToken
+
+
   let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let client = newHttpClient(userAgent = clientUserAgent)
-  client.headers = newHttpHeaders({ "Authorization": authorize })
   
   # Data must be in a multipart
   if data != "":
+    client.headers = newHttpHeaders({ "Authorization": authorize, "Content-Type": "multipart/form-data" })
     var mediaMultipart = newMultiPartData()
     mediaMultipart["media"] = data
     if httpMethod == "POST":
@@ -144,6 +171,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     else:
       raise newException(ValueError, "Can only POST with data")
 
+  client.headers = newHttpHeaders({ "Authorization": authorize, "Content-Type": "application/x-www-form-urlencoded" })
   if httpMethod == "GET":
     return httpclient.get(client, url & "?" & path)
   elif httpMethod == "POST":
@@ -1247,6 +1275,11 @@ proc statusesUpdate*(twitter: TwitterAPI, status: string,
     return post(twitter, "statuses/update.json", additionalParams)
   else:
     return post(twitter, "statuses/update.json", {"status": status}.newStringTable)
+
+
+proc statusesUpdate*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
+  ## `statuses/update.json` endpoint
+  return post(twitter, "statuses/update.json", additionalParams)
 
 
 proc statusesSample*(twitter: TwitterAPI, additionalParams: StringTableRef = nil): Response =
