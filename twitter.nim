@@ -13,7 +13,7 @@ import json
 const baseUrl = "https://api.twitter.com/1.1/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
-const clientUserAgent = "twitter.nim/1.0.1"
+const clientUserAgent = "twitter.nim/1.1.0"
 
 
 type
@@ -26,17 +26,9 @@ type
     ## Consumer token object with a `consumerKey: string` and `consumerSecret: string`
 
 
-  BearerTokenImpl = object
-    bearerToken: string
-
-
-  BearerToken* = ref BearerTokenImpl ## \
-    ## Bearer Token with `bearerToken: string` 
-
-
   TwitterAPIImpl = object
     consumerToken: ConsumerToken
-    bearerToken: BearerToken
+    bearerToken: string
     accessToken: string
     accessTokenSecret: string
 
@@ -50,17 +42,14 @@ proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
                        consumerSecret: consumerSecret)
 
 
-proc newBearerToken*(bearerToken: string): BearerToken =
-  return BearerToken(bearerToken: bearerToken)
-
-
 proc newTwitterAPI*(consumerToken: ConsumerToken, accessToken, accessTokenSecret: string): TwitterAPI =
   return TwitterAPI(consumerToken: consumerToken,
+                    bearerToken: "",
                     accessToken: accessToken,
                     accessTokenSecret: accessTokenSecret)
 
 
-proc newTwitterAPI*(bearerToken: BearerToken): TwitterAPI =
+proc newTwitterAPI*(bearerToken: string): TwitterAPI =
   return TwitterAPI(bearerToken: bearerToken)
 
 
@@ -69,6 +58,7 @@ proc newTwitterAPI*(consumerKey, consumerSecret,
   let consumerToken: ConsumerToken = ConsumerToken(consumerKey: consumerKey,
                                                    consumerSecret: consumerSecret)
   return TwitterAPI(consumerToken: consumerToken,
+                    bearerToken: "",
                     accessToken: accessToken,
                     accessTokenSecret: accessTokenSecret)
 
@@ -132,32 +122,30 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
   
-  var params: StringTableRef
+  var params = newStringTable()
   var authorize = ""
-  if twitter.bearerToken != nil:
-    var params = buildParams(twitter.consumerToken.consumerKey,
+  if twitter.bearerToken == "":
+    authorize = "OAuth "
+    params = buildParams(twitter.consumerToken.consumerKey,
                              twitter.accessToken,
                              additionalParams)
     params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
                                           twitter.accessTokenSecret,
                                           httpMethod, url, params)
     
-    var authorizeKeys: seq[string] = @[]
     for key in params.keys:
       if key.startsWith("oauth_"):
-        authorizeKeys.add(key)
-      keys.add(key)
+        authorize = authorize & key & "=" & params[key] & ","
+      else:
+        keys.add(key)
 
-    authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
   else:
     params = buildParams(additionalParams)
-
     for key in params.keys:
       keys.add(key)
 
-    authorize = "Bearer " & twitter.bearerToken.bearerToken
-
-
+    authorize = "Bearer " & twitter.bearerToken
+  
   let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let client = newHttpClient(userAgent = clientUserAgent)
   
@@ -189,17 +177,28 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
   let httpMethod = "POST"
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
+  
+  var params = newStringTable()
+  var authorize = ""
+  if twitter.bearerToken == "":
+    authorize = "OAuth "
+    params = buildParams(twitter.consumerToken.consumerKey,
+                             twitter.accessToken)
+    params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
+                                          twitter.accessTokenSecret,
+                                          httpMethod, url, params)
+    
+    # var authorizeKeys : seq[string] = @[]
+    for key in params.keys:
+      if key.startsWith("oauth_"):
+        authorize = authorize & key & "=" & params[key] & ","
+        # authorizeKeys.add(key)
+      keys.add(key)
 
-  var params = buildParams(twitter.consumerToken.consumerKey,
-                           twitter.accessToken)
-  params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
-                                        twitter.accessTokenSecret,
-                                        httpMethod, url, params)
+    # authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  else:
+    authorize = "Bearer " & twitter.bearerToken
 
-  for key in params.keys:
-    keys.add(key)
-
-  let authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & params[x]).join(",")
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({"Authorization": authorize, "Content-Type": "application/json; charset=UTF-8"})
 
