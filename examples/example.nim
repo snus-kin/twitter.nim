@@ -9,22 +9,22 @@ when isMainModule:
                                  parsed["AccessToken"].str,
                                  parsed["AccessTokenSecret"].str)
 
-  # # Simply get.
-  # var resp = twitterAPI.get("account/verify_credentials.json")
-  # echo resp.status
+  # Simply get.
+  var resp = twitterAPI.get("account/verify_credentials.json")
+  echo resp.status
 
-  # # ditto, but selected by screen name.
-  # resp = twitterAPI.user("sn_fk_n")
-  # echo pretty parseJson(resp.body)
+  # ditto, but selected by screen name.
+  resp = twitterAPI.usersLookup("sn_fk_n")
+  echo pretty parseJson(resp.body)
 
-  # # Using proc corresponding twitter REST APIs.
-  # resp = twitterAPI.userTimeline()
-  # echo pretty parseJson(resp.body)
+  # Using proc corresponding twitter REST APIs.
+  resp = twitterAPI.statusesUserTimeline()
+  echo pretty parseJson(resp.body)
 
-  # # Using `callAPI` template.
-  # var testStatus = {"status": "test"}.newStringTable
-  # resp = twitterAPI.callAPI(statusesUpdate, testStatus)
-  # echo pretty parseJson(resp.body)
+  # Using `callAPI` template.
+  let status = {"status": "hello world"}.newStringTable
+  resp = twitterAPI.callAPI(statusesUpdate, status)
+  echo pretty parseJson(resp.body)
 
   # Upload files in a stream
   const buffersize = 500000
@@ -32,7 +32,7 @@ when isMainModule:
   let mediaSize = "test.jpg".getFileSize
 
   # INIT
-  var resp = twitterAPI.mediaUploadInit("image/jpg", $ mediaSize)
+  resp = twitterAPI.mediaUploadInit("image/jpg", $ mediaSize)
   let initResp = parseJson(resp.body)
   echo pretty initResp
   let mediaId = initResp["media_id_string"].getStr
@@ -83,5 +83,5 @@ when isMainModule:
   echo resp.status
   
   # Send a tweet with that media
-  let mediaStatus = {"status": "This is an media upload test", "media_ids": finalMediaId}.newStringTable
-  resp = twitterAPI.statusesUpdate(mediaStatus)
+  let mediaStatus = {"media_ids": finalMediaId}.newStringTable
+  resp = twitterAPI.statusesUpdate("This is a media upload test", mediaStatus)
