@@ -125,6 +125,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
   var params = newStringTable()
   var authorize = ""
   if twitter.bearerToken == "":
+    # OAuth1a flow
     authorize = "OAuth "
     params = buildParams(twitter.consumerToken.consumerKey,
                              twitter.accessToken,
@@ -138,8 +139,8 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
         authorize = authorize & key & "=" & params[key] & ","
       else:
         keys.add(key)
-
   else:
+    # OAuth2 flow
     params = buildParams(additionalParams)
     for key in params.keys:
       keys.add(key)
@@ -181,6 +182,7 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
   var params = newStringTable()
   var authorize = ""
   if twitter.bearerToken == "":
+    # OAuth1a flow
     authorize = "OAuth "
     params = buildParams(twitter.consumerToken.consumerKey,
                              twitter.accessToken)
@@ -189,8 +191,8 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
                                           httpMethod, url, params)
     for key in params.keys:
       authorize = authorize & key & "=" & params[key] & ","
-
   else:
+    # Oauth2 flow
     authorize = "Bearer " & twitter.bearerToken
 
   let client = newHttpClient(userAgent = clientUserAgent)
