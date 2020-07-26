@@ -187,15 +187,9 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
     params["oauth_signature"] = signature(twitter.consumerToken.consumerSecret,
                                           twitter.accessTokenSecret,
                                           httpMethod, url, params)
-    
-    # var authorizeKeys : seq[string] = @[]
     for key in params.keys:
-      if key.startsWith("oauth_"):
-        authorize = authorize & key & "=" & params[key] & ","
-        # authorizeKeys.add(key)
-      keys.add(key)
+      authorize = authorize & key & "=" & params[key] & ","
 
-    # authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & params[x]).join(",")
   else:
     authorize = "Bearer " & twitter.bearerToken
 
