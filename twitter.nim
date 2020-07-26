@@ -21,21 +21,36 @@ type
     consumerKey: string
     consumerSecret: string
 
+
   ConsumerToken* = ref ConsumerTokenImpl ## \
-    ## Consumer token object with a `consumerKey` and `consumerSecret`
+    ## Consumer token object with a `consumerKey: string` and `consumerSecret: string`
+
+
+  BearerTokenImpl = object
+    bearerToken: string
+
+
+  BearerToken* = ref BearerTokenImpl ## \
+    ## Bearer Token with `bearerToken: string` 
+
 
   TwitterAPIImpl = object
     consumerToken: ConsumerToken
     accessToken: string
     accessTokenSecret: string
 
+
   TwitterAPI* = ref TwitterAPIImpl ## \
-    ## TwitterAPI token object with a `consumerToken`, `accessToken`, and `accessTokenSecret`
+    ## TwitterAPI token object with a `consumerToken: ConsumerToken`, `accessToken: string`, and `accessTokenSecret: string`
 
 
 proc newConsumerToken*(consumerKey, consumerSecret: string): ConsumerToken =
   return ConsumerToken(consumerKey: consumerKey,
                        consumerSecret: consumerSecret)
+
+
+proc newBearerToken*(bearerToken: string): BearerToken =
+  return BearerToken(bearerToken: bearerToken)
 
 
 proc newTwitterAPI*(consumerToken: ConsumerToken, accessToken, accessTokenSecret: string): TwitterAPI =
