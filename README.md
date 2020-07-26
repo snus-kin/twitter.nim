@@ -46,10 +46,14 @@ when isMainModule:
   resp = twitterAPI.userTimeline()
   echo parseJson(resp.body)
 
+  # ditto, but selected by screen name.
+  resp = twitterAPI.usersLookup("sn_fk_n")
+  echo pretty parseJson(resp.body)
+
   # Using `callAPI` template.
-  var testStatus = {"status": "test"}.newStringTable
-  resp = twitterAPI.callAPI(statusesUpdate, testStatus)
-  echo parseJson(resp.body)
+  let status = {"status": "Hello world!"}.newStringTable
+  resp = twitterAPI.callAPI(statusesUpdate, status)
+  echo pretty parseJson(resp.body)
 
   # Upload media
   var ubody = {"media_type": "twitter_image"}.newStringTable
