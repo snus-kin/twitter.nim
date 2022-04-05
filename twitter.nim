@@ -10,7 +10,7 @@ import hmac
 import json
 
 
-const baseUrl = "https://api.twitter.com/1.1/"
+const baseUrl = "https://api.twitter.com/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
 const clientUserAgent = "twitter.nim/1.0.1"
@@ -115,11 +115,11 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
     keys.add(key)
 
   let authorizeKeys = keys.filter(proc(x: string): bool = x.startsWith("oauth_"))
-  let authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  let authorize = "OAuth " & authorizeKeys.map(proc(x: string): string = x & "=" & "\"" & params[x] & "\"").join(",")
   let path = keys.map(proc(x: string): string = x & "=" & params[x]).join("&")
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({ "Authorization": authorize })
-  
+
   # Data must be in a multipart
   if data != "":
     var mediaMultipart = newMultiPartData()
@@ -156,7 +156,7 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
   for key in params.keys:
     keys.add(key)
 
-  let authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & params[x]).join(",")
+  let authorize = "OAuth " & keys.map(proc(x: string): string = x & "=" & "\"" & params[x] & "\"").join(",")
   let client = newHttpClient(userAgent = clientUserAgent)
   client.headers = newHttpHeaders({"Authorization": authorize, "Content-Type": "application/json; charset=UTF-8"})
 
