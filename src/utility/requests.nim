@@ -70,7 +70,7 @@ proc buildParams(consumerKey, accessToken: string,
 
 
 proc buildParams(additionalParams: StringTableRef = nil): StringTableRef =
-  var params: StringTableRef
+  var params: StringTableRef = newStringTable()
   if additionalParams != nil:
     for key, value in additionalParams:
       params[key] = encodeUrl(value)
