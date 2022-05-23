@@ -10,7 +10,6 @@ when isMainModule:
                                  parsed["AccessToken"].str,
                                  parsed["AccessTokenSecret"].str)
 
-  # TODO change all these so it works 
   # Simply get.
   var resp = twitterAPI.get("1.1/account/verify_credentials.json")
   echo resp.status

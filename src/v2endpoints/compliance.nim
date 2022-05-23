@@ -1,13 +1,8 @@
 import strtabs, httpclient, json
 import ../utility/[requests, types]
 
-# TODO Compliance -- Test
-
 proc complianceJobs*(twitter: TwitterAPI, `type`: string, additionalParams: StringTableRef = nil): Response =
     ## `GET /2/compliance/jobs` endpoint
-    
-    # TODO POST and GET in one method what's the difference here?
-    # POST sends a new compliance job to the server, GET requests a list of recent ones... why are these the same endpoint
     if additionalParams != nil:
         additionalParams["type"] = `type`
         return get(twitter, "2/compliance/jobs", additionalParams)

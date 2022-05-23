@@ -1,24 +1,40 @@
-# TODO Lists
+# ------------------------
 #     List Tweets lookup
-#         GET /2/lists/:id/tweets
+# ------------------------
+# TODO GET /2/lists/:id/tweets
+
+# ------------------------
 #     List follows
-#         DELETE /2/users/:id/followed_lists/:list_id
-#         GET /2/lists/:id/followers
-#         GET /2/users/:id/followed_lists
-#         POST /2/users/:id/followed_lists
+# ------------------------
+# TODO DELETE /2/users/:id/followed_lists/:list_id
+# TODO GET /2/lists/:id/followers
+# TODO GET /2/users/:id/followed_lists
+# TODO POST /2/users/:id/followed_lists
+
+# ------------------------
 #     List lookup
-#         GET /2/lists/:id
-#         GET /2/users/:id/owned_lists
+# ------------------------
+# TODO GET /2/lists/:id
+# TODO GET /2/users/:id/owned_lists
+
+# ------------------------
 #     List members
-#         DELETE /2/lists/:id/members/:user_id
-#         GET /2/lists/:id/members
-#         GET /2/users/:id/list_memberships
-#         POST /2/lists/:id/members
+# ------------------------
+# TODO DELETE /2/lists/:id/members/:user_id
+# TODO GET /2/lists/:id/members
+# TODO GET /2/users/:id/list_memberships
+# TODO POST /2/lists/:id/members
+
+# ------------------------
 #     Manage Lists
-#         DELETE /2/lists/:id
-#         PUT /2/lists/:id
-#         POST /2/lists
+# ------------------------
+# TODO DELETE /2/lists/:id
+# TODO PUT /2/lists/:id
+# TODO POST /2/lists
+
+# ------------------------
 #     Pinned Lists
-#         DELETE /2/users/:id/pinned_lists/:list_id
-#         GET /2/users/:id/pinned_lists
-#         POST /2/users/:id/pinned_lists
+# ------------------------
+# TODO DELETE /2/users/:id/pinned_lists/:list_id
+# TODO GET /2/users/:id/pinned_lists
+# TODO POST /2/users/:id/pinned_lists
