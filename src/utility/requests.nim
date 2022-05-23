@@ -10,12 +10,14 @@ import hmac
 
 import ./types
 
-# TODO Make this work with v2
-const baseUrl = "https://api.twitter.com/"
 # v1.1 : add 1.1/
 # v2 : add 2/
+const baseUrl = "https://api.twitter.com/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
+
+# TODO investigate this, seems to be new?
+const dataAPIUrl = "https://data-api.twitter.com"
 const clientUserAgent = "twitter.nim/1.1.0"
 
 # Stolen from cgi.nim
@@ -100,6 +102,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
         keys.add(key)
   else:
     # OAuth2 flow
+    # TODO can we do this ? https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code
     params = buildParams(additionalParams)
     for key in params.keys:
       keys.add(key)
@@ -138,6 +141,7 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
   ## Request proc for endpoints requiring `application/json` bodies
   # You can only send JSON with POST
   let httpMethod = "POST"
+  # TODO pretty sure this can be done with a /
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
 
@@ -152,6 +156,7 @@ proc request*(twitter: TwitterAPI, endPoint: string, jsonBody: JsonNode = nil,
                                           twitter.accessTokenSecret,
                                           httpMethod, url, params)
     for key in params.keys:
+      # TODO I am pretty sure this can be done better and 'more correct'
       authorize = authorize & key & "=" & params[key] & ","
   else:
     # Oauth2 flow
