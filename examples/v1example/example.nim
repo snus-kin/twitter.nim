@@ -1,5 +1,5 @@
 import json, strtabs, httpclient, streams, os
-import ../src/twitter
+import ../../src/twitter
 
 when isMainModule:
   var parsed = parseFile("credential.json")
