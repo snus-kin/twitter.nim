@@ -6,7 +6,6 @@ import ../utility/[requests, types]
 # ------------------------
 proc usersSourceBlockingTarget*(twitter: TwitterAPI, sourceUserId: string, targetUserId: string, additionalParams: StringTableRef = nil): Response =
     ## `DELETE /2/users/:source_user_id/blocking/:target_user_id` endpoint
-    ## Allows a user ID to block another user.
     return delete(twitter, "2/users/" & sourceUserId & "/blocking/" & targetUserId, additionalParams)
 
 proc usersIdBlocking*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =

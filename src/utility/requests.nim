@@ -18,7 +18,8 @@ const publishUrl = "https://publish.twitter.com"
 
 # TODO investigate this, seems to be new?
 # const dataAPIUrl = "https://data-api.twitter.com"
-const clientUserAgent = "twitter.nim/1.1.0"
+
+const clientUserAgent = "twitter.nim/2.0.0"
 
 # Stolen from cgi.nim
 proc encodeUrl*(s: string): string =
