@@ -1,3 +1,6 @@
+import strtabs, httpclient, json
+import ../utility/[requests, types]
+
 # ------------------------
 #     List Tweets lookup
 # ------------------------
