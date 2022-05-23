@@ -17,7 +17,7 @@ const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
 
 # TODO investigate this, seems to be new?
-const dataAPIUrl = "https://data-api.twitter.com"
+# const dataAPIUrl = "https://data-api.twitter.com"
 const clientUserAgent = "twitter.nim/1.1.0"
 
 # Stolen from cgi.nim

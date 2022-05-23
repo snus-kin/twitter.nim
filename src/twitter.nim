@@ -1,12 +1,8 @@
 import httpclient, strtabs, json
 
 import utility/[types, requests]
-include auth
-include v1endpoints/[lists, followers, collections, users, statuses, directmessages, media, misc]
-include v2endpoints/[complicance, lists, spaces, tweets, users]
-
-export types, requests
-
+import v1, v2, auth
+export types, requests, v1, v2, auth
 
 # -------
 # utility
@@ -32,5 +28,5 @@ template callAPI*(twitter: TwitterAPI, api: untyped,
   ## Example:
   ## ```nim
   ## var testStatus = {"status": "test"}.newStringTable
-  ## var resp = twitterAPI.callAPI(statusesUpdate, testStatus)```
+  ## var resp = twitterAPI.callAPI(twitter.v1.statusesUpdate, testStatus)```
   api(twitter, additionalParams)

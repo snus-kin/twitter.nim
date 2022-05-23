@@ -1,5 +1,5 @@
 # Package
-version = "1.0.1"
+version = "2.0.0"
 author = "snus-kin"
 description = "A twitter API wrapper for Nim."
 srcDir = "src"
