@@ -1,5 +1,5 @@
 import strtabs, httpclient
-import ../utility/[requests, types]
+import utility/[requests, types]
 # --------------
 # authentication
 # --------------

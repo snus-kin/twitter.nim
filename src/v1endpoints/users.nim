@@ -10,9 +10,9 @@ proc usersLookup*(twitter: TwitterAPI, userId: int,
   ## `users/lookup.json` endpoint for user id
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
-    return post(twitter, "users/lookup.json", additionalParams)
+    return post(twitter, "1.1/users/lookup.json", additionalParams)
   else:
-    return post(twitter, "users/lookup.json", {
+    return post(twitter, "1.1/users/lookup.json", {
         "user_id": $userId}.newStringTable)
 
 
@@ -21,9 +21,9 @@ proc usersLookup*(twitter: TwitterAPI, screenName: string,
   ## `users/lookup.json` endpoint for screen name
   if additionalParams != nil:
     additionalParams["screen_name"] = screenName
-    return post(twitter, "users/lookup.json", additionalParams)
+    return post(twitter, "1.1/users/lookup.json", additionalParams)
   else:
-    return post(twitter, "users/lookup.json", {
+    return post(twitter, "1.1/users/lookup.json", {
         "screen_name": screenName}.newStringTable)
 
 
@@ -32,9 +32,9 @@ proc usersSearch*(twitter: TwitterAPI, q: string,
   ## `users/search.json` endpoint
   if additionalParams != nil:
     additionalParams["q"] = q
-    return get(twitter, "users/search.json", additionalParams)
+    return get(twitter, "1.1/users/search.json", additionalParams)
   else:
-    return get(twitter, "users/search.json", {"q": q}.newStringTable)
+    return get(twitter, "1.1/users/search.json", {"q": q}.newStringTable)
 
 
 proc usersProfileBanner*(twitter: TwitterAPI, screenName: string,
@@ -42,9 +42,9 @@ proc usersProfileBanner*(twitter: TwitterAPI, screenName: string,
   ## `users/profile_banner.json` endpoint
   if additionalParams != nil:
     additionalParams["screen_name"] = screenName
-    return get(twitter, "users/profile_banner.json", additionalParams)
+    return get(twitter, "1.1/users/profile_banner.json", additionalParams)
   else:
-    return get(twitter, "users/profile_banner.json", {
+    return get(twitter, "1.1/users/profile_banner.json", {
         "screen_name": screenName}.newStringTable)
 
 
@@ -53,9 +53,9 @@ proc usersProfileBanner*(twitter: TwitterAPI, userId: int,
   ## `users/profile_banner.json` endpoint
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
-    return get(twitter, "users/profile_banner.json", additionalParams)
+    return get(twitter, "1.1/users/profile_banner.json", additionalParams)
   else:
-    return get(twitter, "users/profile_banner.json", {
+    return get(twitter, "1.1/users/profile_banner.json", {
         "user_id": $userId}.newStringTable)
 
 
@@ -64,9 +64,9 @@ proc usersShow*(twitter: TwitterAPI, screenName: string,
   ## `users/show.json` endpoint for screen names (@username)
   if additionalParams != nil:
     additionalParams["screen_name"] = screenName
-    return get(twitter, "users/show.json", additionalParams)
+    return get(twitter, "1.1/users/show.json", additionalParams)
   else:
-    return get(twitter, "users/show.json", {
+    return get(twitter, "1.1/users/show.json", {
         "screen_name": screenName}.newStringTable)
 
 
@@ -75,9 +75,9 @@ proc usersShow*(twitter: TwitterAPI, userId: int,
   ## `users/show.json` endpoint for user id (e.g. `783214 => @twitter`)
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
-    return get(twitter, "users/show.json", additionalParams)
+    return get(twitter, "1.1/users/show.json", additionalParams)
   else:
-    return get(twitter, "users/show.json", {"user_id": $userId}.newStringTable)
+    return get(twitter, "1.1/users/show.json", {"user_id": $userId}.newStringTable)
 
 
 proc usersReportSpam*(twitter: TwitterAPI, screenName: string,
@@ -85,9 +85,9 @@ proc usersReportSpam*(twitter: TwitterAPI, screenName: string,
   ## `users/report_spam.json` endpoint for screen name
   if additionalParams != nil:
     additionalParams["user_id"] = $screenName
-    return get(twitter, "users/report_spam.json", additionalParams)
+    return get(twitter, "1.1/users/report_spam.json", additionalParams)
   else:
-    return get(twitter, "users/report_spam.json", {
+    return get(twitter, "1.1/users/report_spam.json", {
         "screen_name": $screenName}.newStringTable)
 
 
@@ -96,7 +96,7 @@ proc usersReportSpam*(twitter: TwitterAPI, userId: int,
   ## `users/report_spam.json` endpoint for user id
   if additionalParams != nil:
     additionalParams["user_id"] = $userId
-    return get(twitter, "users/report_spam.json", additionalParams)
+    return get(twitter, "1.1/users/report_spam.json", additionalParams)
   else:
-    return get(twitter, "users/report_spam.json", {
+    return get(twitter, "1.1/users/report_spam.json", {
         "user_id": $userId}.newStringTable)

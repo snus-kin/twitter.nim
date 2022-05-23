@@ -19,9 +19,9 @@ proc mediaUploadInit*(twitter: TwitterAPI,
     additionalParams["command"] = "INIT"
     additionalParams["media_type"] = mediaType
     additionalParams["total_bytes"] = totalBytes
-    return post(twitter, "media/upload.json", additionalParams, true)
+    return post(twitter, "1.1/media/upload.json", additionalParams, true)
   else:
-    return post(twitter, "media/upload.json", {"command": "INIT",
+    return post(twitter, "1.1/media/upload.json", {"command": "INIT",
         "media_type": mediaType, "total_bytes": totalBytes}.newStringTable, true)
 
 
@@ -36,9 +36,9 @@ proc mediaUploadAppend*(twitter: TwitterAPI, mediaId: string, segmentId: string,
     additionalParams["command"] = "APPEND"
     additionalParams["media_id"] = mediaId
     additionalParams["segment_index"] = segmentId
-    return post(twitter, "media/upload.json", additionalParams, true, data)
+    return post(twitter, "1.1/media/upload.json", additionalParams, true, data)
   else:
-    return post(twitter, "media/upload.json", {"command": "APPEND",
+    return post(twitter, "1.1/media/upload.json", {"command": "APPEND",
         "media_id": mediaId, "segment_index": segmentId}.newStringTable, true, data)
 
 
@@ -54,9 +54,9 @@ proc mediaUploadStatus*(twitter: TwitterAPI, mediaId: string,
   if additionalParams != nil:
     additionalParams["command"] = "STATUS"
     additionalParams["media_id"] = mediaId
-    return get(twitter, "media/upload.json", additionalParams, true)
+    return get(twitter, "1.1/media/upload.json", additionalParams, true)
   else:
-    return get(twitter, "media/upload.json", {"command": "STATUS",
+    return get(twitter, "1.1/media/upload.json", {"command": "STATUS",
         "media_id": mediaId}.newStringTable, true)
 
 
@@ -72,9 +72,9 @@ proc mediaUploadFinalize*(twitter: TwitterAPI, mediaId: string,
   if additionalParams != nil:
     additionalParams["command"] = "FINALIZE"
     additionalParams["media_id"] = mediaId
-    return post(twitter, "media/upload.json", additionalParams, true)
+    return post(twitter, "1.1/media/upload.json", additionalParams, true)
   else:
-    return post(twitter, "media/upload.json", {"command": "FINALIZE",
+    return post(twitter, "1.1/media/upload.json", {"command": "FINALIZE",
         "media_id": mediaId}.newStringTable, true)
 
 
@@ -82,18 +82,18 @@ proc mediaMetadataCreate*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ## `media/metadata/create.json` endpoint
   ##
   ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-metadata-create
-  return post(twitter, "media/metadata/create.json", jsonBody, media = true)
+  return post(twitter, "1.1/media/metadata/create.json", jsonBody, media = true)
 
 
 proc mediaSubtitlesCreate*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ## `media/subtitles/create.json` endpoint
   ##
   ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
-  return post(twitter, "media/subtitles/create.json", jsonBody, media = true)
+  return post(twitter, "1.1/media/subtitles/create.json", jsonBody, media = true)
 
 
 proc mediaSubtitlesDelete*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
   ## `media/subtitles/delete.json` endpoint
   ##
   ## Docs: https://developer.twitter.com/en/docs/media/upload-media/api-reference/post-media-subtitles-create
-  return post(twitter, "media/subtitles/delete.json", jsonBody, media = true)
+  return post(twitter, "1.1/media/subtitles/delete.json", jsonBody, media = true)

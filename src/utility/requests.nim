@@ -10,7 +10,10 @@ import hmac
 
 import ./types
 
-const baseUrl = "https://api.twitter.com/1.1/"
+# TODO Make this work with v2
+const baseUrl = "https://api.twitter.com/"
+# v1.1 : add 1.1/
+# v2 : add 2/
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
 const clientUserAgent = "twitter.nim/1.1.0"
@@ -47,12 +50,14 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string,
 
 proc buildParams(consumerKey, accessToken: string,
                  additionalParams: StringTableRef = nil): StringTableRef =
-  var params: StringTableRef = {"oauth_version": "1.0",
-                                 "oauth_consumer_key": consumerKey,
-                                 "oauth_nonce": $genUUID(),
-                                 "oauth_signature_method": "HMAC-SHA1",
-                                 "oauth_timestamp": $(epochTime().toInt),
-                                 "oauth_token": accessToken}.newStringTable
+  var params: StringTableRef = {
+                                  "oauth_version": "1.0",
+                                  "oauth_consumer_key": consumerKey,
+                                  "oauth_nonce": $genUUID(),
+                                  "oauth_signature_method": "HMAC-SHA1",
+                                  "oauth_timestamp": $(epochTime().toInt),
+                                  "oauth_token": accessToken
+                                }.newStringTable
 
   for key, value in params:
     params[key] = encodeUrl(value)
