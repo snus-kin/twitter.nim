@@ -1,4 +1,4 @@
-# twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master)
+# twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fstandard) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2)
 
 Low-level twitter API wrapper library for Nim.
 
