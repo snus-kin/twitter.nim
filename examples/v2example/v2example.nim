@@ -8,6 +8,3 @@ when isMainModule:
   # Bearer token get info about an account
   let resp = twitter.v2.usersId(twitterAPI, "1140672492220162052")
   echo pretty parseJson(resp.body)
-
-#   let resp = twitter.v2.usersMe(twitterAPI)
-#   echo pretty parseJson(resp.body)
