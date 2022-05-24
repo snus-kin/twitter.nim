@@ -1,6 +1,6 @@
 # twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fstandard) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2)
 
-Low-level twitter API wrapper library for Nim.
+Low-level Twitter API wrapper library for Nim.
 
 [Documentation](https://snus-kin.github.io/twitter.nim/twitter.html)
 
@@ -12,7 +12,7 @@ From Nimble:
 $ nimble install twitter
 ```
 
-From Github:
+From GitHub:
 
 ```console
 $ git clone git://github.com/snus-kin/twitter.nim
@@ -23,10 +23,10 @@ $ cd twitter.nim && nimble install
 
 To use the library, `import twitter` and compile with `-d:ssl`
 
-Note: only the standard (free) endpoints are wrapped. All mentioned in the
+Note: only the free endpoints are wrapped. All mentioned in the
 [API Reference Index](https://developer.twitter.com/en/docs/api-reference-index)
 have been implemented, please open an issue if you find one that isn't in this
-reference.
+reference or if anything new's been added I haven't seen yet.
 
 ## Example
 
