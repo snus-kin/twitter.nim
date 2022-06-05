@@ -49,7 +49,7 @@ proc usersIdMuting*(twitter: TwitterAPI, id: string, additionalParams: StringTab
     ## Returns a list of users who are muted by the specified user ID.
     return get(twitter, "2/users/" & id & "/muting", additionalParams)
 
-proc usersIdMuting*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
+proc usersIdMuting*(twitter: TwitterAPI, id: string, jsonBody: JsonNode): Response =
     ## `POST /2/users/:id/muting` endpoint
     ## Allows an authenticated user ID to mute the target user.
     return post(twitter, "2/users/" & id & "/muting", jsonBody)

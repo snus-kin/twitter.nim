@@ -34,7 +34,7 @@ proc listsId*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef 
     ## `GET /2/lists/:id` endpoint
     return get(twitter, "2/lists/" & id, additionalParams)
 
-proc usersIdFollowedLists*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
+proc usersIdOwnedLists*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
     ## `GET /2/users/:id/owned_lists` endpoint
     return get(twitter, "2/users/" & id & "/owned_lists", additionalParams)
 
@@ -49,7 +49,7 @@ proc listsIdFollowedLists*(twitter: TwitterAPI, id: string, additionalParams: St
     ## `GET /2/lists/:id/members` endpoint
     return get(twitter, "2/lists/" & id & "/members", additionalParams)
 
-proc usersIdFollowedLists*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
+proc usersIdListMemberships*(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
     ## `GET /2/users/:id/list_memberships` endpoint
     return get(twitter, "2/users/" & id & "/list_memberships", additionalParams)
 
@@ -82,9 +82,9 @@ proc lists*(twitter: TwitterAPI, jsonBody: JsonNode): Response =
 # ------------------------
 proc usersIdPinnedListsListId*(twitter: TwitterAPI, id: string, userId: string, additionalParams: StringTableRef = nil): Response =
     # `DELETE /2/users/:id/pinned_lists/:list_id` endpoint
-    return delete(twitter, "2/users/" & id & "/pinned_lists/" & userIds, additionalParams)
+    return delete(twitter, "2/users/" & id & "/pinned_lists/" & userId, additionalParams)
 
-proc usersIdFollowedLists(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
+proc usersIdPinnedLists(twitter: TwitterAPI, id: string, additionalParams: StringTableRef = nil): Response =
     ## `GET /2/users/:id/pinned_lists` endpoint
     return get(twitter, "2/users/" & id & "/pinned_lists", additionalParams)
 
