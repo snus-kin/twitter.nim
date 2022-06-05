@@ -104,7 +104,7 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
         authorize = authorize & key & "=" & params[key] & ","
       else:
         keys.add(key)
-  else if username != "":
+  elif username != "":
     # Basic authentication
     authorize = username & ":" & password
     for key in params.keys:
