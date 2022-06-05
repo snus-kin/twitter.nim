@@ -61,3 +61,5 @@ when isMainModule:
 ```
 
 See also: `examples/` for more extensive examples on the library's use.
+
+To use basic auth, you will have to construct the request using the bare request object.

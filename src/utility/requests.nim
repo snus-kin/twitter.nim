@@ -16,7 +16,9 @@ const baseUrl = "https://api.twitter.com/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
 
-# TODO investigate this, seems to be new?
+# TODO investigate this, seems to be new? 
+# I'm not sure if this is outside of free twitter endpoints,
+# you should be able to request to it using the request method manually
 # const dataAPIUrl = "https://data-api.twitter.com"
 
 const clientUserAgent = "twitter.nim/2.0.0"
@@ -80,7 +82,8 @@ proc buildParams(additionalParams: StringTableRef = nil): StringTableRef =
 
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
               additionalParams: StringTableRef = nil,
-              requestUrl: string = baseUrl, data: string = ""): Response =
+              requestUrl: string = baseUrl, data: string = "", 
+              username: string = "", password: string = ""): Response =
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
 
@@ -101,6 +104,11 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
         authorize = authorize & key & "=" & params[key] & ","
       else:
         keys.add(key)
+  else if username != "":
+    # Basic authentication
+    authorize = username & ":" & password
+    for key in params.keys:
+      keys.add(key)
   else:
     # OAuth2 flow
     # TODO can we do this ? https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code
