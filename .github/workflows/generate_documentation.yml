@@ -15,7 +15,7 @@ jobs:
       - name: Build documentation
         run: |
           cd docs
-          nim doc ../twitter.nim
+          nim doc ../src/twitter.nim
       - name: Commit if docs have changed
         run: |-
           git diff
