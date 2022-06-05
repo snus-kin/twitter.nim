@@ -1,5 +1,5 @@
 import strtabs, httpclient
-import ../utility/[requests, types]
+import utility/[requests, types]
 # --------------
 # authentication
 # --------------
@@ -65,4 +65,14 @@ proc oauth2Token*(twitter: TwitterAPI, grantType: string,
     return post(twitter, "oauth2/token", additionalParams)
   else:
     return post(twitter, "oauth2/token", {
+        "grant_type": grantType}.newStringTable)
+
+proc v2oauth2Token*(twitter: TwitterAPI, grantType: string,
+    additionalParams: StringTableRef = nil): Response =
+  ## `oauth2/token` endpoint, I'm not sure how this is different to the previous endpoint, as of now I have no clarification.
+  if additionalParams != nil:
+    additionalParams["grant_type"] = grantType
+    return post(twitter, "2/oauth2/token", additionalParams)
+  else:
+    return post(twitter, "2/oauth2/token", {
         "grant_type": grantType}.newStringTable)

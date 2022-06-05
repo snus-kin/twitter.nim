@@ -10,10 +10,18 @@ import hmac
 
 import ./types
 
-const baseUrl = "https://api.twitter.com/1.1/"
+# v1.1 : add 1.1/
+# v2 : add 2/
+const baseUrl = "https://api.twitter.com/"
 const uploadUrl = "https://upload.twitter.com/1.1/"
 const publishUrl = "https://publish.twitter.com"
-const clientUserAgent = "twitter.nim/1.1.0"
+
+# TODO investigate this, seems to be new? 
+# I'm not sure if this is outside of free twitter endpoints,
+# you should be able to request to it using the request method manually
+# const dataAPIUrl = "https://data-api.twitter.com"
+
+const clientUserAgent = "twitter.nim/2.0.0"
 
 # Stolen from cgi.nim
 proc encodeUrl*(s: string): string =
@@ -47,12 +55,14 @@ proc signature(consumerSecret, accessTokenSecret, httpMethod, url: string,
 
 proc buildParams(consumerKey, accessToken: string,
                  additionalParams: StringTableRef = nil): StringTableRef =
-  var params: StringTableRef = {"oauth_version": "1.0",
-                                 "oauth_consumer_key": consumerKey,
-                                 "oauth_nonce": $genUUID(),
-                                 "oauth_signature_method": "HMAC-SHA1",
-                                 "oauth_timestamp": $(epochTime().toInt),
-                                 "oauth_token": accessToken}.newStringTable
+  var params: StringTableRef = {
+                                  "oauth_version": "1.0",
+                                  "oauth_consumer_key": consumerKey,
+                                  "oauth_nonce": $genUUID(),
+                                  "oauth_signature_method": "HMAC-SHA1",
+                                  "oauth_timestamp": $(epochTime().toInt),
+                                  "oauth_token": accessToken
+                                }.newStringTable
 
   for key, value in params:
     params[key] = encodeUrl(value)
@@ -63,7 +73,7 @@ proc buildParams(consumerKey, accessToken: string,
 
 
 proc buildParams(additionalParams: StringTableRef = nil): StringTableRef =
-  var params: StringTableRef
+  var params: StringTableRef = newStringTable()
   if additionalParams != nil:
     for key, value in additionalParams:
       params[key] = encodeUrl(value)
@@ -72,7 +82,8 @@ proc buildParams(additionalParams: StringTableRef = nil): StringTableRef =
 
 proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
               additionalParams: StringTableRef = nil,
-              requestUrl: string = baseUrl, data: string = ""): Response =
+              requestUrl: string = baseUrl, data: string = "", 
+              username: string = "", password: string = ""): Response =
   let url = requestUrl & endPoint
   var keys: seq[string] = @[]
 
@@ -93,8 +104,14 @@ proc request*(twitter: TwitterAPI, endPoint, httpMethod: string,
         authorize = authorize & key & "=" & params[key] & ","
       else:
         keys.add(key)
+  elif username != "":
+    # Basic authentication
+    authorize = username & ":" & password
+    for key in params.keys:
+      keys.add(key)
   else:
     # OAuth2 flow
+    # TODO can we do this ? https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code
     params = buildParams(additionalParams)
     for key in params.keys:
       keys.add(key)

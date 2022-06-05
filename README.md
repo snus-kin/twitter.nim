@@ -1,16 +1,18 @@
-# twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master)
+# twitter ![.github/workflows/tests.yml](https://github.com/snus-kin/twitter.nim/workflows/.github/workflows/tests.yml/badge.svg?branch=master) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fstandard) ![](https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2)
 
-Low-level twitter API wrapper library for Nim. 
+Low-level Twitter API wrapper library for Nim.
 
 [Documentation](https://snus-kin.github.io/twitter.nim/twitter.html)
 
 ## Installation
+
 From Nimble:
+
 ```console
 $ nimble install twitter
 ```
 
-From Github:
+From GitHub:
 
 ```console
 $ git clone git://github.com/snus-kin/twitter.nim
@@ -18,14 +20,16 @@ $ cd twitter.nim && nimble install
 ```
 
 ## Usage
-To use the library, `import twitter` and compile with `-d:ssl` 
 
-Note: only the standard (free) endpoints are wrapped. All mentioned in the
+To use the library, `import twitter` and compile with `-d:ssl`
+
+Note: only the free endpoints are wrapped. All mentioned in the
 [API Reference Index](https://developer.twitter.com/en/docs/api-reference-index)
 have been implemented, please open an issue if you find one that isn't in this
-reference.
+reference or if anything new's been added I haven't seen yet.
 
 ## Example
+
 ```nim
 import twitter, json, strtabs
 
@@ -39,27 +43,23 @@ when isMainModule:
                                  parsed["AccessTokenSecret"].str)
 
   # Simply get.
-  var resp = twitterAPI.get("account/verify_credentials.json")
+  var resp = twitterAPI.get("1.1/account/verify_credentials.json")
   echo resp.status
 
-  # Using proc corresponding twitter REST APIs.
-  resp = twitterAPI.userTimeline()
-  echo parseJson(resp.body)
-
   # ditto, but selected by screen name.
-  resp = twitterAPI.usersLookup("sn_fk_n")
+  resp = twitter.v1.usersLookup(twitterAPI, "sn_fk_n")
+  echo pretty parseJson(resp.body)
+
+  # Using proc corresponding twitter REST APIs.
+  resp = twitter.v1.statusesUserTimeline(twitterAPI)
   echo pretty parseJson(resp.body)
 
   # Using `callAPI` template.
-  let status = {"status": "Hello world!"}.newStringTable
-  resp = twitterAPI.callAPI(statusesUpdate, status)
+  let status = {"status": "hello world"}.newStringTable
+  resp = twitterAPI.callAPI(twitter.v1.statusesUpdate, status)
   echo pretty parseJson(resp.body)
-
-  # Upload media
-  var ubody = {"media_type": "twitter_image"}.newStringTable
-  var image = readFile("example.png")
-  resp = twitterAPI.post("media/upload.json", ubody, media=true, data=image)
-  echo parseJson(resp.body)
 ```
 
 See also: `examples/` for more extensive examples on the library's use.
+
+To use basic auth, you will have to construct the request using the bare request object.

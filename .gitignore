@@ -1,9 +1,10 @@
 *~
 src/twitter
 examples/example
-examples/credential.json
+credential.json
 nimcache/
 *.swp
 twitter
 test.jpg
 test.mp4
+examples/v2example/v2example
