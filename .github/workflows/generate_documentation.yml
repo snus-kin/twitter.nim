@@ -8,18 +8,15 @@ jobs:
     name: Generate documentation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - uses: jiro4989/setup-nim-action@v1.1.4
-      - name: Install deps
-        run: nimble install -d -Y
-      - name: Build documentation
+      - uses: actions/checkout@v2
+      - uses: iffy/install-nim@v4.1.1
+      - name: Generate
         run: |
-          cd docs
-          nim doc ../src/twitter.nim
-      - name: Commit if docs have changed
-        run: |-
-          git diff
-          git config --global user.email "tcarroll@snufk.in"
-          git config --global user.name "docsbot"
-          git diff --quiet || (git add docs/* && git commit -m "Auto-generated documentation")
-          git push
+          nimble install -d -y
+          nimble docs
+      - name: Update Docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./docs
+
