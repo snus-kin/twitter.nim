@@ -1,0 +1,8 @@
+oauthAuthenticate	auth.html#oauthAuthenticate,TwitterAPI,StringTableRef	auth: oauthAuthenticate(twitter: TwitterAPI; additionalParams: StringTableRef = nil): Response	
+oauthAuthorize	auth.html#oauthAuthorize,TwitterAPI,StringTableRef	auth: oauthAuthorize(twitter: TwitterAPI; additionalParams: StringTableRef = nil): Response	
+oauthAccessToken	auth.html#oauthAccessToken,TwitterAPI,string,string,StringTableRef	auth: oauthAccessToken(twitter: TwitterAPI; oauthToken: string; oauthVerifier: string;\n                 additionalParams: StringTableRef = nil): Response	
+oauthInvalidateToken	auth.html#oauthInvalidateToken,TwitterAPI,StringTableRef	auth: oauthInvalidateToken(twitter: TwitterAPI; additionalParams: StringTableRef = nil): Response	
+oauthRequestToken	auth.html#oauthRequestToken,TwitterAPI,string,StringTableRef	auth: oauthRequestToken(twitter: TwitterAPI; oauthCallback: string;\n                  additionalParams: StringTableRef = nil): Response	
+oauth2InvalidateToken	auth.html#oauth2InvalidateToken,TwitterAPI,string,StringTableRef	auth: oauth2InvalidateToken(twitter: TwitterAPI; accessToken: string;\n                      additionalParams: StringTableRef = nil): Response	
+oauth2Token	auth.html#oauth2Token,TwitterAPI,string,StringTableRef	auth: oauth2Token(twitter: TwitterAPI; grantType: string;\n            additionalParams: StringTableRef = nil): Response	
+v2oauth2Token	auth.html#v2oauth2Token,TwitterAPI,string,StringTableRef	auth: v2oauth2Token(twitter: TwitterAPI; grantType: string;\n              additionalParams: StringTableRef = nil): Response	

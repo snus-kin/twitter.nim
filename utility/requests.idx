@@ -1,0 +1,9 @@
+encodeUrl	utility/requests.html#encodeUrl,string	requests: encodeUrl(s: string): string	
+request	utility/requests.html#request,TwitterAPI,string,string,StringTableRef,string,string,string,string	requests: request(twitter: TwitterAPI; endPoint, httpMethod: string;\n        additionalParams: StringTableRef = nil; requestUrl: string = baseUrl;\n        data: string = &quot;&quot;; username: string = &quot;&quot;; password: string = &quot;&quot;): Response	
+request	utility/requests.html#request,TwitterAPI,string,JsonNode,string	requests: request(twitter: TwitterAPI; endPoint: string; jsonBody: JsonNode = nil;\n        requestUrl: string = baseUrl): Response	
+get	utility/requests.html#get,TwitterAPI,string,StringTableRef,bool,bool	requests: get(twitter: TwitterAPI; endPoint: string;\n    additionalParams: StringTableRef = nil; media: bool = false;\n    publish: bool = false): Response	
+post	utility/requests.html#post,TwitterAPI,string,StringTableRef,bool	requests: post(twitter: TwitterAPI; endPoint: string;\n     additionalParams: StringTableRef = nil; media: bool = false): Response	
+post	utility/requests.html#post,TwitterAPI,string,StringTableRef,bool,string	requests: post(twitter: TwitterAPI; endPoint: string;\n     additionalParams: StringTableRef = nil; media: bool = false; data: string): Response	
+post	utility/requests.html#post,TwitterAPI,string,JsonNode,bool	requests: post(twitter: TwitterAPI; endPoint: string; jsonBody: JsonNode;\n     media: bool = false): Response	
+delete	utility/requests.html#delete,TwitterAPI,string,StringTableRef	requests: delete(twitter: TwitterAPI; endPoint: string;\n       additionalParams: StringTableRef = nil): Response	
+put	utility/requests.html#put,TwitterAPI,string,StringTableRef	requests: put(twitter: TwitterAPI; endPoint: string;\n    additionalParams: StringTableRef = nil): Response	

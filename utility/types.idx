@@ -1,0 +1,6 @@
+ConsumerToken	utility/types.html#ConsumerToken	types: ConsumerToken	
+TwitterAPI	utility/types.html#TwitterAPI	types: TwitterAPI	
+newConsumerToken	utility/types.html#newConsumerToken,string,string	types: newConsumerToken(consumerKey, consumerSecret: string): ConsumerToken	
+newTwitterAPI	utility/types.html#newTwitterAPI,ConsumerToken,string,string	types: newTwitterAPI(consumerToken: ConsumerToken;\n              accessToken, accessTokenSecret: string): TwitterAPI	
+newTwitterAPI	utility/types.html#newTwitterAPI,string	types: newTwitterAPI(bearerToken: string): TwitterAPI	
+newTwitterAPI	utility/types.html#newTwitterAPI,string,string,string,string	types: newTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSecret: string): TwitterAPI	

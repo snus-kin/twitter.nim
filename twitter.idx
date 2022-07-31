@@ -1,0 +1,2 @@
+uploadFile	twitter.html#uploadFile,TwitterAPI,string,string,StringTableRef	twitter: uploadFile(twitter: TwitterAPI; filename: string; mediaType: string;\n           additionalParams: StringTableRef = nil): Response	
+callAPI	twitter.html#callAPI.t,TwitterAPI,untyped,StringTableRef	twitter: callAPI(twitter: TwitterAPI; api: untyped;\n        additionalParams: StringTableRef = nil): untyped	
